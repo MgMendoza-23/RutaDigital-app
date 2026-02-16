@@ -1,0 +1,117 @@
+/* Contenedor principal centrado */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    background-color: #f4f5f8; 
+}
+
+/* Sección del Logo */
+.header-logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-icon {
+    font-size: 80px;
+    color: var(--ion-color-primary);
+}
+
+.app-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+.app-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Inputs personalizados */
+.custom-input {
+    --background: #ffffff;
+    --padding-start: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Sombra suave */
+    border: 1px solid #e0e0e0;
+}
+
+/* Botón principal */
+.login-button {
+    margin-top: 30px;
+    --border-radius: 12px;
+    font-weight: 600;
+    height: 50px;
+    --box-shadow: 0 4px 12px rgba(0, 84, 233, 0.3);
+}
+
+/* Texto inferior */
+.footer-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #666;
+}
+
+.link-action {
+    color: var(--ion-color-primary);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- Estilos para la Notificación --- */
+
+/* Base compartida */
+ion-toast.custom-toast {
+    --border-radius: 16px;
+    --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); 
+    font-weight: 600; 
+    text-align: center;
+}
+
+/* ERROR: Rojo semitransparente */
+ion-toast.toast-error {
+    --background: rgba(203, 40, 62, 0.85); 
+    --color: #ffffff;
+    --button-color: #ffffff;
+}
+
+
+/* --- NOTIFICACIÓN ESTILO TIKTOK / iOS GLASS --- */
+
+/* Configuración base del componente (Posición y sombras generales) */
+ion-toast.custom-toast {
+    --box-shadow: none;
+    --background: transparent; 
+    font-weight: 600;
+}
+
+/* LA MAGIA: Estilizando SOLO la píldora interna */
+ion-toast.custom-toast::part(container) {
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50px; 
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.80);
+    padding-inline: 10px;
+}
+
+/* TEXTO Y CONTENIDO */
+ion-toast.custom-toast::part(message) {
+    color: #000000; 
+    text-align: center;
+    font-size: 16px;
+}
+
+/* BOTÓN  */
+ion-toast.custom-toast::part(button) {
+    color: #0054e9; 
+    font-weight: bold;
+}
