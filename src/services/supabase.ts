@@ -19,6 +19,7 @@ export interface Ruta {
   precio: number;
   duracion?: string;
   horarios?: Horario[]; 
+  fecha_salida?: string;
 }
 
 //--- FUNCIONES CRUD ---
@@ -46,6 +47,28 @@ export const eliminarRuta = async (id: number) => {
     .eq('id', id); 
   return { error };
 };
+
+// Función de ACTUALIZACION de una ruta
+export const actualizarRuta = async (idRuta: string, nuevosDatos: Ruta) => {
+  const { data, error } = await supabase
+  .from('rutas')
+  .update({
+    origen: nuevosDatos.origen,
+    destino: nuevosDatos.destino,
+    precio: nuevosDatos.precio,
+    duracion: nuevosDatos.duracion,
+    horarios: nuevosDatos.horarios,
+    fecha_salida: nuevosDatos.fecha_salida
+  })
+  .eq('id', idRuta);
+
+  if (error) {
+    console.log("Error al actualizar la ruta", error);
+    return { error };
+  } else {
+    return { data };
+  }
+}
 
 // --- AUTENTICACIÓN ---
 
@@ -77,4 +100,73 @@ export const iniciarSesion = async (email: string, password: string) => {
 export const cerrarSesion = async () => {
   const { error } = await supabase.auth.signOut();
   return { error };
+};
+
+// BÚSQUEDA DE RUTAS
+
+export const buscarRutasUsuario = async (origen: string, destino: string) => {
+
+  let query = supabase.from('rutas').select('*');
+  if (origen) {
+    query = query.ilike('origen', `%${origen}%`);
+  }
+
+  if (destino) {
+    query = query.ilike('destino', `%${destino}%`);
+  }
+
+  const { data, error } = await query;
+  return { data, error };
+};
+
+// RESERVAS
+export interface Reserva {
+    id?: number;
+    usuario_id: string;
+    ruta_id: number;
+    created_at?: string;
+    rutas?: Ruta; 
+}
+
+export const crearReserva = async (rutaId: number, usuarioId: string) => {
+  const { data, error } = await supabase
+    .from('reservas')
+    .insert([
+      { 
+        ruta_id: rutaId, 
+        usuario_id: usuarioId,
+        estado: 'confirmado'
+      }
+    ]);
+  
+  return { data, error };
+};
+
+export const obtenerMisReservas = async (usuarioId: string) => {
+  const { data, error } = await supabase
+    .from('reservas')
+    .select(`
+      *,
+      rutas:ruta_id (origen, destino, precio, duracion, salida)
+    `)
+    .eq('usuario_id', usuarioId)
+    .order('created_at', { ascending: false });
+
+  return { data, error };
+};
+
+// DETECTOR DE ROLES
+export const obtenerRolUsuario = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('perfiles')
+    .select('rol')
+    .eq('id', userId)
+    .single();
+
+    if (error) {
+      console.log("Error al obtener el rol del usuario", error);
+      return 'usuario';
+    }
+    
+  return data?.rol || 'usuario'; 
 };

@@ -1,12 +1,226 @@
-/* For information on how to create your own theme, please refer to:
-http://ionicframework.com/docs/theming/ */
-/** primary: Un Azul Tecnológico fuerte **/
-  --ion-color-primary: #0054e9;
-  --ion-color-primary-rgb: 0,84,233;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255,255,255;
-  --ion-color-primary-shade: #004ap;
-  --ion-color-primary-tint: #1a65eb;
+:root {
+    /* Color extraído de tu imagen (Verde Azulado) */
+    --ion-color-primary: #1ba098;
+    --ion-color-primary-rgb: 27, 160, 152;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #188d86;
+    --ion-color-primary-tint: #32aaa2;
 
-  /** secondary: Un Naranja para acciones secundarias o alertas **/
-  --ion-color-secondary: #ff9f1c;
+    /* Fondo general */
+    --ion-background-color: #f4f5f8;
+  }
+
+  /* --- ESTILOS GENERALES (FUENTE) --- */
+/* Si puedes, importa una fuente Serif para los títulos como en la imagen */
+h1, h2, h3 {
+    font-family: 'Georgia', serif; /* Simulación de la fuente serif de la imagen */
+    font-weight: bold;
+}
+
+/* --- HEADER CURVO (IMAGEN 1) --- */
+.curved-header-bg {
+    background-color: var(--ion-color-primary);
+    padding-bottom: 40px; /* Espacio para la curva */
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10;
+}
+
+.header-title {
+    text-align: center;
+    color: white;
+    padding-top: 10px;
+}
+.header-title h2 {
+    margin: 0;
+    font-size: 28px;
+}
+.header-subtitle {
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(255,255,255,0.5);
+    display: inline-block;
+    padding: 0 20px;
+}
+
+/* --- MENÚ LATERAL (Corrección Visual) --- */
+
+/* 1. Fondo del Contenedor Principal */
+ion-menu.custom-menu::part(container) {
+    border-radius: 0 20px 20px 0; /* Borde redondeado a la derecha */
+    box-shadow: 4px 0 16px rgba(0,0,0,0.2);
+}
+
+/* 2. Fondo INTERNO (Lo importante para que se vea verde) */
+ion-menu.custom-menu ion-content {
+    --background: var(--ion-color-primary); /* Usa el color Teal definido */
+}
+
+/* 3. Header del Menú */
+.menu-header {
+    padding: 50px 20px 30px 20px;
+    text-align: center;
+    color: white;
+}
+.menu-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+.menu-header .underline {
+    height: 3px;
+    width: 60px;
+    background: white;
+    margin: 10px auto;
+    border-radius: 2px;
+}
+
+/* 4. Lista transparente */
+.menu-list {
+    background: transparent !important;
+    padding: 0 15px; /* Espacio lateral para los botones */
+}
+
+/* 5. Botones tipo "Pastilla" (Pill) */
+.menu-item {
+    --background: white;        /* Fondo blanco */
+    --color: #333;             /* Texto oscuro */
+    --min-height: 50px;        /* Altura del botón */
+    border-radius: 25px;       /* Redondeo total */
+    margin-bottom: 15px;       /* Espacio entre botones */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Sombra suave */
+    font-weight: 600;
+    --padding-start: 20px;
+}
+
+/* 6. Footer del menú */
+.menu-footer {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.menu-profile {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
+    padding: 8px 15px;
+    margin-top: 15px;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.input-card {
+    background: #ffffff; /* <--- IMPORTANTE: BLANCO PURO */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* <--- Sombra un poco más fuerte */
+    margin-bottom: 15px;
+    border: 1px solid #f0f0f0; /* Borde sutil */
+}
+
+/* --- TARJETA DE RUTA ADMIN (DISEÑO NUEVO) --- */
+.admin-route-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 16px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+/* Contenedor de la línea de tiempo (Puntos y línea) */
+.timeline-container {
+    position: relative;
+    padding-left: 24px; /* Espacio para los puntos */
+    margin-bottom: 10px;
+}
+
+/* La línea vertical conectora */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 7px; /* Centrado con los puntos */
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background-color: #e0e0e0; /* Color de la línea */
+}
+
+/* Estilos comunes para los puntos */
+.point-origen, .point-destino {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Punto Negro (Origen) */
+.point-origen::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    width: 16px;
+    height: 16px;
+    background-color: #000; /* Negro */
+    border-radius: 50%;
+    border: 2px solid white;
+    z-index: 2;
+}
+
+/* Punto Blanco/Hueco (Destino) */
+.point-destino::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    width: 16px;
+    height: 16px;
+    background-color: #fff; /* Blanco */
+    border: 3px solid #000; /* Borde negro grueso */
+    border-radius: 50%;
+    z-index: 2;
+}
+
+/* La píldora del precio */
+.price-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: #f0f0f0; /* Gris claro */
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+/* La fecha al pie */
+.route-date-footer {
+    text-align: right;
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+/* Contenedor de botones de acción */
+.card-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+}
