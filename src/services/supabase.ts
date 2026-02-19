@@ -102,18 +102,15 @@ export const cerrarSesion = async () => {
   return { error };
 };
 
-// --- BÚSQUEDA DE RUTAS (Faltaba esto) ---
+// BÚSQUEDA DE RUTAS
 
 export const buscarRutasUsuario = async (origen: string, destino: string) => {
-  // Empezamos la consulta seleccionando todo
-  let query = supabase.from('rutas').select('*');
 
-  // Si el usuario escribió origen, filtramos (ilike ignora mayúsculas/minúsculas)
+  let query = supabase.from('rutas').select('*');
   if (origen) {
     query = query.ilike('origen', `%${origen}%`);
   }
 
-  // Si el usuario escribió destino, filtramos
   if (destino) {
     query = query.ilike('destino', `%${destino}%`);
   }
@@ -123,13 +120,12 @@ export const buscarRutasUsuario = async (origen: string, destino: string) => {
 };
 
 // RESERVAS
-
 export interface Reserva {
     id?: number;
     usuario_id: string;
     ruta_id: number;
     created_at?: string;
-    rutas?: Ruta; // Para poder ver los detalles de la ruta en el historial
+    rutas?: Ruta; 
 }
 
 export const crearReserva = async (rutaId: number, usuarioId: string) => {
@@ -147,7 +143,6 @@ export const crearReserva = async (rutaId: number, usuarioId: string) => {
 };
 
 export const obtenerMisReservas = async (usuarioId: string) => {
-  // Traemos las reservas Y el detalle de la ruta (join)
   const { data, error } = await supabase
     .from('reservas')
     .select(`
@@ -160,7 +155,7 @@ export const obtenerMisReservas = async (usuarioId: string) => {
   return { data, error };
 };
 
-// --- DETECTOR DE ROLES ---
+// DETECTOR DE ROLES
 export const obtenerRolUsuario = async (userId: string) => {
   const { data, error } = await supabase
     .from('perfiles')
@@ -173,6 +168,5 @@ export const obtenerRolUsuario = async (userId: string) => {
       return 'usuario';
     }
     
-  // Si no encuentra nada, asume que es un usuario normal por seguridad
   return data?.rol || 'usuario'; 
 };
