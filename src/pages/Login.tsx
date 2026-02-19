@@ -3,13 +3,11 @@ import {
   IonContent, IonPage, IonInput, IonButton, IonIcon,  
   IonItem, IonLabel, IonLoading, IonToast
 } from '@ionic/react';
-import { useHistory } from 'react-router-dom';
 import { mailOutline, lockClosedOutline, logInOutline, personAddOutline, bus, personOutline, callOutline, warningOutline, checkmarkCircleOutline } from 'ionicons/icons';
-import { registrarUsuario, iniciarSesion } from '../services/supabase';
+import { registrarUsuario, iniciarSesion, obtenerRolUsuario } from '../services/supabase';
 import './Login.css'; 
 
 const Login: React.FC = () => {
-  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [esRegistro, setEsRegistro] = useState(false);
@@ -31,13 +29,14 @@ const Login: React.FC = () => {
         return;
     }
 
-    if (esRegistro) {
-        if (!nombre || !telefono) {
+    if (esRegistro && (!nombre || !telefono)) {
             setMensaje("Por favor completa todos los campos");
             setMostrarToast(true);
             setCargando(false);
             return;
         }
+
+    if (esRegistro) {
       resultado = await registrarUsuario(email, password, nombre, telefono);
     } else {
       resultado = await iniciarSesion(email, password);
@@ -46,14 +45,31 @@ const Login: React.FC = () => {
     setCargando(false);
 
     if (resultado.error) {
-      setMensaje(resultado.error.message);
+      setMensaje("Error: " + resultado.error.message);
       setMostrarToast(true);
     } else {
-      setMensaje(esRegistro ? "¡Cuenta creada! Bienvenido." : "¡Bienvenido a bordo!");
+     
+    if (resultado.data && resultado.data.user) {
+      const rol = await obtenerRolUsuario(resultado.data.user.id);
+
+      setMensaje(esRegistro ? "¡Cuenta creada! Bienvenido." : `Bienvenido ${nombre || ''}`);
       setMostrarToast(true);
-      history.push('/admin-rutas'); 
+
+      setTimeout(() => {
+        if (rol === 'admin') {
+          console.log("Usuario es ADMIN -> Panel");
+          window.location.href = '/admin-rutas';
+        } else {
+          console.log("Usuario es CLIENTE -> Buscador");
+          window.location.href = '/buscar-viajes';
     }
-  };
+    setEmail('');
+    setPassword('');
+    setMostrarToast(false);
+  }, 1000);
+    }
+  }
+};
 
   return (
     <IonPage>
@@ -131,6 +147,7 @@ const Login: React.FC = () => {
                 </IonButton>
             </div>
 
+
             {/* Footer (Cambiar modo) */}
             <div className="footer-text">
                 {esRegistro ? "¿Ya tienes cuenta? " : "¿Nuevo usuario? "}
@@ -147,7 +164,7 @@ const Login: React.FC = () => {
           isOpen={mostrarToast}
           onDidDismiss={() => setMostrarToast(false)}
           message={mensaje}
-          duration={10000}
+          duration={500}
           position="top"
 
           className="custom-toast"
