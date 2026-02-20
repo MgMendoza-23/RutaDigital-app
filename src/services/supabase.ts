@@ -22,7 +22,7 @@ export interface Ruta {
   fecha_salida?: string;
 }
 
-//--- FUNCIONES CRUD ---
+//FUNCIONES CRUD
 
 export const crearRuta = async (ruta: Ruta) => {
   const { data, error } = await supabase
@@ -39,7 +39,7 @@ export const obtenerRutas = async () => {
   return { data: data as Ruta[], error };
 };
 
-// Función para ELIMINAR una ruta por su ID
+// Función para eliminar una ruta por su ID
 export const eliminarRuta = async (id: number) => {
   const { error } = await supabase
     .from('rutas') 
@@ -48,7 +48,7 @@ export const eliminarRuta = async (id: number) => {
   return { error };
 };
 
-// Función de ACTUALIZACION de una ruta
+// Función de actualizacion de una ruta
 export const actualizarRuta = async (idRuta: string, nuevosDatos: Ruta) => {
   const { data, error } = await supabase
   .from('rutas')
@@ -70,7 +70,7 @@ export const actualizarRuta = async (idRuta: string, nuevosDatos: Ruta) => {
   }
 }
 
-// --- AUTENTICACIÓN ---
+// AUTENTICACIÓN
 
 // Registrar un nuevo usuario
 export const registrarUsuario = async (email: string, password: string, nombre: string, telefono: string) => {
@@ -102,6 +102,39 @@ export const cerrarSesion = async () => {
   return { error };
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // BÚSQUEDA DE RUTAS
 
 export const buscarRutasUsuario = async (origen: string, destino: string) => {
@@ -128,6 +161,7 @@ export interface Reserva {
     rutas?: Ruta; 
 }
 
+// funcion para crear una reserva
 export const crearReserva = async (rutaId: number, usuarioId: string) => {
   const { data, error } = await supabase
     .from('reservas')
@@ -155,7 +189,8 @@ export const obtenerMisReservas = async (usuarioId: string) => {
   return { data, error };
 };
 
-// DETECTOR DE ROLES
+// deteccion de roles de usuario
+
 export const obtenerRolUsuario = async (userId: string) => {
   const { data, error } = await supabase
     .from('perfiles')

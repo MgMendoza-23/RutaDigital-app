@@ -6,13 +6,13 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { personCircleOutline } from 'ionicons/icons';
 
-/* Imports de páginas */
+/* Importacion de páginas */
 import Login from './pages/Login';
 import BuscarViajes from './pages/BuscarViajes';
 import AdminRutas from './pages/AdminRutas';
 import TodasLasRutas from './pages/TodasLasRutas';
 
-/* CSS Global */
+/* CSS  */
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
@@ -30,17 +30,17 @@ setupIonicReact();
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      {/* --- MENU LATERAL --- */}
+      
       <IonMenu contentId="main-content" type="overlay" className="custom-menu">
         <IonContent className="menu-gradient">
           
-          {/* Título del Menú */}
+          
           <div className="menu-header">
             <h2>RutaDigital</h2>
             <div className="underline"></div>
           </div>
 
-          {/* Botones del Menú (Estilo Píldora Blanca) */}
+          
           <IonList lines="none" className="menu-list">
             <IonMenuToggle autoHide={false}>
 
@@ -62,7 +62,7 @@ const App: React.FC = () => (
             </IonMenuToggle>
           </IonList>
 
-          {/* Parte inferior: Salir y Perfil */}
+          
           <div className="menu-footer">
             <IonMenuToggle autoHide={false}>
               <IonItem button routerLink="/login" className="menu-item logout-item">
@@ -79,7 +79,7 @@ const App: React.FC = () => (
         </IonContent>
       </IonMenu>
 
-      {/* --- CONTENIDO PRINCIPAL --- */}
+      
       <IonRouterOutlet id="main-content">
         <Route exact path="/login"><Login /></Route>
         <Route exact path="/buscar-viajes"><BuscarViajes /></Route>

@@ -4,12 +4,10 @@ import {
   IonToast, IonDatetime, IonDatetimeButton, IonModal, IonButtons, IonBackButton, IonHeader, IonToolbar, IonTitle
 } from '@ionic/react';
 import { trash, createOutline, calendarOutline, timeOutline } from 'ionicons/icons';
-// Importamos las funciones, incluyendo la nueva 'actualizarRuta'
 import { crearRuta, obtenerRutas, eliminarRuta, actualizarRuta, Ruta } from '../services/supabase';
 import '../theme/variables.css';
-// Importamos 'date-fns' para formatear la fecha bonita. (Si no lo tienes, ejecuta: npm i date-fns)
 import { format, parseISO } from 'date-fns';
-import { es } from 'date-fns/locale'; // Importamos idioma español
+import { es } from 'date-fns/locale';
 
 const AdminRutas: React.FC = () => {
   const [rutas, setRutas] = useState<Ruta[]>([]);
@@ -17,7 +15,6 @@ const AdminRutas: React.FC = () => {
   const [mensaje, setMensaje] = useState('');
   const [mostrarToast, setMostrarToast] = useState(false);
 
-  // ESTADOS DEL FORMULARIO
   const [modoEdicion, setModoEdicion] = useState<string | null>(null);
   
   const [form, setForm] = useState({
@@ -28,7 +25,6 @@ const AdminRutas: React.FC = () => {
     fecha_salida: new Date().toISOString()
   });
 
-  // Cargar rutas al iniciar
   useEffect(() => {
     cargarRutas();
   }, []);
@@ -40,7 +36,7 @@ const AdminRutas: React.FC = () => {
     setCargando(false);
   };
 
-  // MANEJAR EL GUARDADO
+
   const manejarGuardar = async () => {
     if (!form.origen || !form.destino || !form.precio || !form.fecha_salida) {
       setMensaje("Por favor completa los campos obligatorios");
@@ -73,7 +69,7 @@ const AdminRutas: React.FC = () => {
     setMostrarToast(true);
   };
 
-  // FUNCIÓN PARA ELIMINAR
+  // ELIMINAR
   const manejarEliminar = async (id: string) => {
     const { error } = await eliminarRuta(id);
     if (error) {
@@ -85,9 +81,9 @@ const AdminRutas: React.FC = () => {
     setMostrarToast(true);
   };
 
-  // FUNCIÓN PARA CARGAR DATOS EN EL FORMULARIO 
+  // mover datos al formulario para hacer update a ruta existente
   const cargarParaEditar = (ruta: Ruta) => {
-    setModoEdicion(ruta.id!); // Guardamos el ID que vamos a editar
+    setModoEdicion(ruta.id!); // usando id para modificar ruta despues
     setForm({
         origen: ruta.origen,
         destino: ruta.destino,
@@ -98,18 +94,16 @@ const AdminRutas: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Función auxiliar para limpiar
+  // Función para resetear datos del formulario
   const limpiarFormulario = () => {
-    setModoEdicion(null); // Volvemos a modo "Crear"
+    setModoEdicion(null); 
     setForm({ origen: '', destino: '', precio: '', duracion: '', fecha_salida: new Date().toISOString() });
   };
 
-  // --- FUNCIÓN PARA FORMATEAR FECHA
+  // --- formateo de fecha para que se vea mejor por dia mes año
   const formatearFechaVisual = (fechaIso?: string) => {
     if (!fechaIso) return "Sin fecha";
     try {
-        // parseISO convierte el string de Supabase a objeto Date
-        // format le da el formato deseado en español
         return format(parseISO(fechaIso), "dd - MMM - yyyy", { locale: es });
     } catch (e) {
         return "Fecha inválida";
@@ -118,7 +112,6 @@ const AdminRutas: React.FC = () => {
 
   return (
     <IonPage>
-      {/* Header Simple para Admin */}
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons slot="start"><IonBackButton defaultHref="/login" /></IonButtons>
@@ -128,10 +121,10 @@ const AdminRutas: React.FC = () => {
 
       <IonContent className="ion-padding" style={{'--background': '#f4f5f8'}}>
 
-        {/* TARJETA DEL FORMULARIO (Crear / Editar) */}
+        
         <div style={{ background: 'white', padding: '20px', borderRadius: '16px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', marginBottom: '30px' }}>
           <h2 style={{ marginTop: 0, color: 'var(--ion-color-primary)' }}>
-            {modoEdicion ? "✏️ Editar Ruta" : "➕ Nueva Ruta"}
+            {modoEdicion ? " Editar Ruta" : " Nueva Ruta"}
           </h2>
           
           <IonList lines="none" style={{padding: 0}}>
@@ -145,7 +138,7 @@ const AdminRutas: React.FC = () => {
               />
             </IonItem>
 
-            {/* Destino */}
+      
             <IonItem className="input-card" style={{'--background': 'white', margin: '10px 0', border:'1px solid #eee'}}>
               <IonIcon icon={createOutline} slot="start" color="medium"/>
               <IonInput 
@@ -155,7 +148,7 @@ const AdminRutas: React.FC = () => {
               />
             </IonItem>
 
-            {/* Precio y Duración en la misma fila */}
+            
             <div style={{ display: 'flex', gap: '10px' }}>
                 <IonItem className="input-card" style={{'--background': 'white', margin: '10px 0', border:'1px solid #eee', flex: 1}}>
                 <IonLabel position="stacked">Precio ($)</IonLabel>
@@ -177,14 +170,14 @@ const AdminRutas: React.FC = () => {
                 </IonItem>
             </div>
 
-            {/* SELECTOR DE FECHA Y HORA */}
+            
             <IonItem className="input-card" style={{'--background': 'white', margin: '10px 0', border:'1px solid #eee'}}>
                  <IonIcon icon={calendarOutline} slot="start" color="medium"/>
                  <IonLabel>Fecha de Salida</IonLabel>
-                 {/* Botón que abre el calendario */}
+                 
                  <IonDatetimeButton datetime="datetime-salida"></IonDatetimeButton>
 
-                 {/* Modal oculto con el calendario */}
+                 
                  <IonModal keepContentsMounted={true}>
                     <IonDatetime 
                         id="datetime-salida" 
@@ -198,14 +191,14 @@ const AdminRutas: React.FC = () => {
 
           </IonList>
 
-          {/* Botones del Formulario */}
+          
           <div style={{display: 'flex', gap: '10px', marginTop: '20px'}}>
-              {/* Botón Principal (Crear o Actualizar) */}
+              
               <IonButton expand="block" onClick={manejarGuardar} style={{flex: 2, '--border-radius': '10px'}}>
                   {modoEdicion ? "Actualizar Ruta" : "Crear Ruta"}
               </IonButton>
               
-              {/* Botón Cancelar */}
+              
               {modoEdicion && (
                  <IonButton expand="block" color="medium" fill="outline" onClick={limpiarFormulario} style={{flex: 1, '--border-radius': '10px'}}>
                      Cancelar
@@ -216,19 +209,19 @@ const AdminRutas: React.FC = () => {
 
         <hr style={{ borderTop: '1px solid #ddd', margin: '30px 0' }} />
 
-        {/* LISTA DE RUTAS */}
+        
         <h3 style={{ fontFamily: 'serif', marginLeft: '10px' }}>Rutas Existentes ({rutas.length})</h3>
         
         {rutas.map((ruta) => (
   
           <div key={ruta.id} className="admin-route-card">
               
-              {/* Píldora de Precio*/}
+              
               <div className="price-badge">
                   ${ruta.precio}
               </div>
 
-              {/* Línea de tiempo con puntos */}
+              
               <div className="timeline-container">
                   <div className="point-origen">
                       {ruta.origen}
@@ -238,14 +231,14 @@ const AdminRutas: React.FC = () => {
                   </div>
               </div>
               
-              {/* Fecha en la esquina inferior derecha */}
+              
               <div className="route-date-footer">
                   {formatearFechaVisual(ruta.fecha_salida)}
               </div>
 
-              {/* Botones de Acción (Editar y Eliminar) */}
+              
               <div className="card-actions">
-                  {/* Botón EDITAR */}
+                  
                   <IonButton 
                       size="small" 
                       fill="outline" 
@@ -257,7 +250,7 @@ const AdminRutas: React.FC = () => {
                       Editar
                   </IonButton>
 
-                  {/* Botón ELIMINAR */}
+                  
                   <IonButton 
                       size="small" 
                       fill="outline" 
@@ -285,7 +278,7 @@ const AdminRutas: React.FC = () => {
   );
 };
 
-// Función auxiliar rápida para manejar el valor del DateTime de Ionic
+
 const stringOrArrayToString = (val: string | string[] | null | undefined): string => {
     if (!val) return new Date().toISOString();
     if (Array.isArray(val)) return val[0];
