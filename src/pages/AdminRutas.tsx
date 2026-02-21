@@ -1,11 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import {
-  IonContent, IonPage, IonInput, IonButton, IonIcon, IonList, IonItem, IonLabel,
-  IonToast, IonDatetime, IonDatetimeButton, IonModal, IonButtons, IonBackButton, IonHeader, IonToolbar, IonTitle
+    IonContent, IonPage, IonInput, IonButton, IonIcon, IonList, IonItem, IonLabel,
+    IonToast, IonDatetime, IonDatetimeButton, IonModal, IonButtons, IonBackButton, IonHeader, IonToolbar, IonTitle
 } from '@ionic/react';
 import { trash, createOutline, calendarOutline, timeOutline } from 'ionicons/icons';
-import { crearRuta, obtenerRutas, eliminarRuta, actualizarRuta, Ruta } from '../services/supabase';
-import '../theme/variables.css';
+
+// importamos archivo css
+import '../CSS/variables.css';
+
+
+/*
+Funciones en Archivo Functions.Admin.ts
+
+-> Crear ruta
+-> Obtener rutas
+-> Eliminar ruta
+-> Actualizar ruta
+
+
+*/
+
+
+
+// obteniendo el modelo de datos de las rutas
+import { Ruta } from "../models/types";
+
+import { crearRuta, obtenerRutas, eliminarRuta, actualizarRuta } from '../services/Functions.Admin';
+
+
+
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -172,13 +195,13 @@ const AdminRutas: React.FC = () => {
 
             
             <IonItem className="input-card" style={{'--background': 'white', margin: '10px 0', border:'1px solid #eee'}}>
-                 <IonIcon icon={calendarOutline} slot="start" color="medium"/>
-                 <IonLabel>Fecha de Salida</IonLabel>
-                 
-                 <IonDatetimeButton datetime="datetime-salida"></IonDatetimeButton>
+                <IonIcon icon={calendarOutline} slot="start" color="medium"/>
+                <IonLabel>Fecha de Salida</IonLabel>
 
-                 
-                 <IonModal keepContentsMounted={true}>
+                <IonDatetimeButton datetime="datetime-salida"></IonDatetimeButton>
+
+
+                <IonModal keepContentsMounted={true}>
                     <IonDatetime 
                         id="datetime-salida" 
                         presentation="date-time" 
@@ -200,9 +223,9 @@ const AdminRutas: React.FC = () => {
               
               
               {modoEdicion && (
-                 <IonButton expand="block" color="medium" fill="outline" onClick={limpiarFormulario} style={{flex: 1, '--border-radius': '10px'}}>
-                     Cancelar
-                 </IonButton>
+                <IonButton expand="block" color="medium" fill="outline" onClick={limpiarFormulario} style={{flex: 1, '--border-radius': '10px'}}>
+                    Cancelar
+                </IonButton>
               )}
           </div>
         </div>

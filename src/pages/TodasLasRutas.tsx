@@ -1,20 +1,53 @@
+
 import React, { useEffect, useState } from 'react';
 import {
   IonContent, IonPage, IonButtons, IonMenuButton, IonIcon, 
   IonCard, IonCardContent, IonButton, IonText, IonLoading
 } from '@ionic/react';
 import { personCircleOutline, arrowForward, timeOutline, bus } from 'ionicons/icons';
-import { supabase, Ruta, crearReserva } from '../services/supabase';
-import '../theme/variables.css';
+
+
+// importamos el archivo css
+import '../CSS/variables.css';
+
+
+/*
+Funciones en Archivo "../services/Functions.Users.ts"
+
+-> Buscar rutas Usuario
+-> Crear reserva
+-> Obtener Mis Reservas
+-> Obtener rol usuario al loguear
+
+
+Funciones en Archivo "..//API/supabase.ts"
+
+-> supabase
+
+*/
+
+// obteniendo el modelo de datos de las rutas
+import { Ruta } from "../models/types";
+
+
+
+import { supabase } from '../API/supabase';
+
+import {  crearReserva } from '../services/Functions.Users';
+
+
 
 const TodasLasRutas: React.FC = () => {
   const [rutas, setRutas] = useState<Ruta[]>([]);
   const [cargando, setCargando] = useState(true);
 
-  // Cargar TODO al entrar
+
   useEffect(() => {
     cargarRutas();
   }, []);
+
+
+  // Funcion asincrona para cargar todas las Rutas existentes 
 
   const cargarRutas = async () => {
     const { data } = await supabase.from('rutas').select('*');
@@ -24,7 +57,7 @@ const TodasLasRutas: React.FC = () => {
 
   return (
     <IonPage>
-      {/* HEADER VERDE CURVO  */}
+    
       <div className="curved-header-bg">
         <div style={{display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center'}}>
             <IonButtons>
@@ -58,7 +91,7 @@ const TodasLasRutas: React.FC = () => {
                         <span><IonIcon icon={timeOutline} style={{verticalAlign: 'middle'}}/> {ruta.duracion}</span>
                         <span><IonIcon icon={bus} style={{verticalAlign: 'middle'}}/> Bus Ejecutivo</span>
                     </div>
-                    {/* Botón visual  */}
+                
                     <IonButton expand="block" fill="outline" style={{marginTop: '15px'}}>
                         Ver Detalles
                     </IonButton>

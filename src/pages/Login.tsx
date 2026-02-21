@@ -4,8 +4,39 @@ import {
   IonItem, IonLabel, IonLoading, IonToast
 } from '@ionic/react';
 import { mailOutline, lockClosedOutline, logInOutline, personAddOutline, bus, personOutline, callOutline, warningOutline, checkmarkCircleOutline } from 'ionicons/icons';
-import { registrarUsuario, iniciarSesion, obtenerRolUsuario } from '../services/supabase';
-import './Login.css'; 
+
+//importamos archivo css
+
+import "../CSS/Login.css";
+
+
+
+/*
+
+
+Funciones en Archivo Functions.Users.ts
+
+-> Buscar rutas
+-> Crear reserva
+-> Obtener reservas del usuario
+-> Obtener rol usuario al loguear
+
+
+Funciones en Archivo Functions.Auth.ts
+
+-> Registrar usuario
+-> Iniciar Sesion
+-> Cerrar Sesion
+
+
+*/
+
+import { registrarUsuario, iniciarSesion } from '../services/Functions.Auth';
+
+import { obtenerRolUsuario } from '../services/Functions.Users';
+
+
+
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -21,7 +52,7 @@ const Login: React.FC = () => {
     setCargando(true);
     let resultado;
 
-    // Validación normal
+    // Validación normalita
     if(!email || !password) {
         setMensaje("Por favor completa todos los campos");
         setMostrarToast(true);

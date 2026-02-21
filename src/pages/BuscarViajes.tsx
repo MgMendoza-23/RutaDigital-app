@@ -1,74 +1,99 @@
 import React, { useState } from 'react';
 import {
-  IonContent, IonPage, IonInput, IonButton, 
-  IonIcon, IonButtons, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonText, 
-  IonToast, IonCard, IonCardContent, 
-  useIonViewWillEnter 
+    IonContent, IonPage, IonInput, IonButton, 
+    IonIcon, IonButtons, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonText, 
+    IonToast, IonCard, IonCardContent, 
+    useIonViewWillEnter 
 } from '@ionic/react';
 import { locationOutline, calendarOutline, personCircleOutline, arrowForward, timeOutline, bus } from 'ionicons/icons';
-import { buscarRutasUsuario, crearReserva, Ruta, supabase } from '../services/supabase';
 import { useHistory } from 'react-router-dom';
-import '../theme/variables.css'; 
+
+// importamos archivo css
+import '../CSS/variables.css'; 
+
+/*
+Funciones en Archivo "../services/Functions.Users.ts"
+
+-> Buscar rutas Usuario
+-> Crear reserva
+-> Obtener Mis Reservas
+-> Obtener rol usuario al loguear
+
+
+Funciones en Archivo "..//API/supabase.ts"
+
+-> supabase
+
+*/
+
+// obteniendo el modelo de datos de las rutas
+import { Ruta } from "../models/types";
+import { supabase } from '../API/supabase';
+
+
+import { buscarRutasUsuario, crearReserva} from '../services/Functions.Users';
+
+
 
 const BuscarViajes: React.FC = () => {
-  const history = useHistory();
-  
-  // sstados de datos
-  const [tipoViaje, setTipoViaje] = useState('ida');
-  const [origen, setOrigen] = useState('');
-  const [destino, setDestino] = useState('');
-  const [fechaSalida, setFechaSalida] = useState('');
-  const [fechaRetorno, setFechaRetorno] = useState(''); 
-  
-  // estados para logica funcional
-  const [resultados, setResultados] = useState<Ruta[]>([]);
-  const [mensaje, setMensaje] = useState('');
-  const [mostrarToast, setMostrarToast] = useState(false);
-  const [busco, setBusco] = useState(false);
+    const history = useHistory();
 
-  
-  useIonViewWillEnter(() => {
+
+    const [tipoViaje, setTipoViaje] = useState('ida');
+    const [origen, setOrigen] = useState('');
+    const [destino, setDestino] = useState('');
+    const [fechaSalida, setFechaSalida] = useState('');
+    const [fechaRetorno, setFechaRetorno] = useState(''); 
+
+
+    const [resultados, setResultados] = useState<Ruta[]>([]);
+    const [mensaje, setMensaje] = useState('');
+    const [mostrarToast, setMostrarToast] = useState(false);
+    const [busco, setBusco] = useState(false);
+
+
+    useIonViewWillEnter(() => {
     setOrigen('');
     setDestino('');
     setFechaSalida('');
     setFechaRetorno('');
     setResultados([]);
     setBusco(false);
-  });
+    });
 
-  const buscar = async () => {
+    const buscar = async () => {
     setBusco(true);
     
     const { data } = await buscarRutasUsuario(origen, destino);
     if (data) {
-      setResultados(data as Ruta[]);
+        setResultados(data as Ruta[]);
     }
-  };
+};
 
-  const reservar = async (ruta: Ruta) => {
+const reservar = async (ruta: Ruta) => {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      setMensaje("⚠️ Necesitas iniciar sesión para reservar");
-      setMostrarToast(true);
-      return;
+        setMensaje("⚠️ Necesitas iniciar sesión para reservar");
+        setMostrarToast(true);
+        return;
     }
 
     const { error } = await crearReserva(ruta.id!, user.id);
 
     if (error) {
-      setMensaje("❌ Error: " + error.message);
+        setMensaje(" Error: " + error.message);
     } else {
-      setMensaje(`✅ ¡Reserva confirmada a ${ruta.destino}!`);
-      setResultados([]); 
+        setMensaje(` ¡Reserva confirmada a ${ruta.destino}!`);
+        setResultados([]); 
     }
     setMostrarToast(true);
-  };
+    };
 
-  return (
+    return (
     <IonPage>
-      
-      <div className="curved-header-bg">
+
+        <div className="curved-header-bg">
         <div style={{display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center'}}>
             <IonButtons>
                 <IonMenuButton color="light" /> 
@@ -79,9 +104,9 @@ const BuscarViajes: React.FC = () => {
             </div>
             <IonIcon icon={personCircleOutline} style={{fontSize: '35px', color: 'white'}} />
         </div>
-      </div>
+        </div>
 
-      <IonContent className="ion-padding" style={{'--background': '#f4f5f8'}}>
+        <IonContent className="ion-padding" style={{'--background': '#f4f5f8'}}>
         
         <IonText color="dark">
             <h1 style={{fontFamily: 'serif', marginTop: '10px', fontSize: '28px'}}>Reservación</h1>
@@ -103,8 +128,6 @@ const BuscarViajes: React.FC = () => {
                 </IonSegmentButton>
             </IonSegment>
         </div>
-
-       
         
         
         <div className="input-card" style={{display:'flex', alignItems:'center', padding:'5px 15px'}}>
@@ -116,7 +139,6 @@ const BuscarViajes: React.FC = () => {
                 style={{'--padding-start': '0'}}
             />
         </div>
-
         
         <div className="input-card" style={{display:'flex', alignItems:'center', padding:'5px 15px'}}>
             <IonIcon icon={locationOutline} className="input-icon" />
@@ -127,16 +149,15 @@ const BuscarViajes: React.FC = () => {
                 style={{'--padding-start': '0'}}
             />
         </div>
-
         
         <div style={{display: 'flex', gap: '15px', width: '100%'}}>
             
-            {/* Input Salida */}
+
             <div className="input-card" style={{
                 display:'flex', 
                 alignItems:'center', 
                 padding:'5px 15px', 
-                /* Si es vuelta ocupa mitad, si es ida ocupa 55% */
+
                 flex: tipoViaje === 'vuelta' ? '1' : '0 0 55%'
             }}>
                 <IonIcon icon={calendarOutline} className="input-icon" />
@@ -149,13 +170,12 @@ const BuscarViajes: React.FC = () => {
                 />
             </div>
 
-            {/* Input Retorno (Solo visible si es Ida y Vuelta) */}
             {tipoViaje === 'vuelta' && (
                 <div className="input-card" style={{
                     display:'flex', 
                     alignItems:'center', 
                     padding:'5px 15px', 
-                    flex: '1' // Ocupa el espacio restante
+                    flex: '1'
                 }}>
                     <IonIcon icon={calendarOutline} className="input-icon" />
                     <IonInput 
@@ -169,7 +189,7 @@ const BuscarViajes: React.FC = () => {
             )}
         </div>
 
-        {/* Botón Buscar */}
+    
         <IonButton 
             expand="block" 
             className="ion-margin-top"
@@ -190,11 +210,11 @@ const BuscarViajes: React.FC = () => {
 
         <hr style={{margin: '30px 0', borderTop: '1px solid #ccc'}} />
 
-        {/* Resultados */}
+
         {resultados.length > 0 && (
             <div>
-                 <h3 style={{fontFamily: 'serif'}}>Resultados ({resultados.length})</h3>
-                 {resultados.map((ruta) => (
+                <h3 style={{fontFamily: 'serif'}}>Resultados ({resultados.length})</h3>
+                {resultados.map((ruta) => (
                     <IonCard key={ruta.id} style={{borderRadius: '15px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', marginBottom: '20px', background: 'white'}}>
                         <IonCardContent>
                             <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 'bold', color: '#333'}}>
@@ -210,18 +230,17 @@ const BuscarViajes: React.FC = () => {
                             </IonButton>
                         </IonCardContent>
                     </IonCard>
-                 ))}
+                ))}
             </div>
         )}
 
-        {/* Mensaje Vacío */}
         {busco && resultados.length === 0 && (
-             <div style={{textAlign: 'center', color: '#999', padding: '20px'}}>
+            <div style={{textAlign: 'center', color: '#999', padding: '20px'}}>
                 <p>No encontramos viajes disponibles 😢</p>
             </div>
         )}
 
-        {/* Placeholders */}
+
         {!busco && (
             <div style={{display: 'flex', gap: '10px', overflowX: 'auto'}}>
                 {[1,2,3].map(i => (
@@ -237,17 +256,17 @@ const BuscarViajes: React.FC = () => {
         )}
 
         <IonToast
-          isOpen={mostrarToast}
-          onDidDismiss={() => setMostrarToast(false)}
-          message={mensaje}
-          duration={2000}
-          position="top"
-          color={mensaje.includes("✅") ? "success" : "warning"}
+            isOpen={mostrarToast}
+            onDidDismiss={() => setMostrarToast(false)}
+            message={mensaje}
+            duration={2000}
+            position="top"
+            color={mensaje.includes("✅") ? "success" : "warning"}
         />
 
-      </IonContent>
+        </IonContent>
     </IonPage>
-  );
+    );
 };
 
 export default BuscarViajes;
