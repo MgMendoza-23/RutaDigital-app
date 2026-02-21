@@ -11,14 +11,13 @@
     --ion-background-color: #f4f5f8;
   }
 
-  /* --- ESTILOS GENERALES (FUENTE) --- */
-/* Si puedes, importa una fuente Serif para los títulos como en la imagen */
+
 h1, h2, h3 {
     font-family: 'Georgia', serif; /* Simulación de la fuente serif de la imagen */
     font-weight: bold;
 }
 
-/* --- HEADER CURVO (IMAGEN 1) --- */
+/* --- HEADER CURVO  --- */
 .curved-header-bg {
     background-color: var(--ion-color-primary);
     padding-bottom: 40px; /* Espacio para la curva */
@@ -50,20 +49,20 @@ h1, h2, h3 {
     padding: 0 20px;
 }
 
-/* --- MENÚ LATERAL (Corrección Visual) --- */
 
-/* 1. Fondo del Contenedor Principal */
+
+/* Fondo del Contenedor Principal */
 ion-menu.custom-menu::part(container) {
     border-radius: 0 20px 20px 0; /* Borde redondeado a la derecha */
     box-shadow: 4px 0 16px rgba(0,0,0,0.2);
 }
 
-/* 2. Fondo INTERNO (Lo importante para que se vea verde) */
+/*Fondo INTERNO  */
 ion-menu.custom-menu ion-content {
-    --background: var(--ion-color-primary); /* Usa el color Teal definido */
+    --background: var(--ion-color-primary); /* Usando el color primario */
 }
 
-/* 3. Header del Menú */
+/*Header del Menú */
 .menu-header {
     padding: 50px 20px 30px 20px;
     text-align: center;
@@ -83,25 +82,25 @@ ion-menu.custom-menu ion-content {
     border-radius: 2px;
 }
 
-/* 4. Lista transparente */
+/* Lista transparente */
 .menu-list {
     background: transparent !important;
     padding: 0 15px; /* Espacio lateral para los botones */
 }
 
-/* 5. Botones tipo "Pastilla" (Pill) */
+/* Botones tipo "Pastilla" */
 .menu-item {
     --background: white;        /* Fondo blanco */
     --color: #333;             /* Texto oscuro */
     --min-height: 50px;        /* Altura del botón */
     border-radius: 25px;       /* Redondeo total */
     margin-bottom: 15px;       /* Espacio entre botones */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Sombra suave */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Sombra */
     font-weight: 600;
     --padding-start: 20px;
 }
 
-/* 6. Footer del menú */
+/* 6. pie de pagina del menú */
 .menu-footer {
     position: absolute;
     bottom: 30px;
@@ -122,14 +121,14 @@ ion-menu.custom-menu ion-content {
 }
 
 .input-card {
-    background: #ffffff; /* <--- IMPORTANTE: BLANCO PURO */
+    background: #ffffff; 
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* <--- Sombra un poco más fuerte */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     margin-bottom: 15px;
-    border: 1px solid #f0f0f0; /* Borde sutil */
+    border: 1px solid #f0f0f0;
 }
 
-/* --- TARJETA DE RUTA ADMIN (DISEÑO NUEVO) --- */
+/* --- TARJETA DE RUTA ADMIN  --- */
 .admin-route-card {
     background: white;
     border-radius: 16px;
@@ -139,7 +138,7 @@ ion-menu.custom-menu ion-content {
     position: relative;
 }
 
-/* Contenedor de la línea de tiempo (Puntos y línea) */
+/* Contenedor de la línea de tiempo  */
 .timeline-container {
     position: relative;
     padding-left: 24px; /* Espacio para los puntos */
@@ -157,7 +156,7 @@ ion-menu.custom-menu ion-content {
     background-color: #e0e0e0; /* Color de la línea */
 }
 
-/* Estilos comunes para los puntos */
+
 .point-origen, .point-destino {
     position: relative;
     display: flex;
@@ -167,7 +166,7 @@ ion-menu.custom-menu ion-content {
     color: #333;
 }
 
-/* Punto Negro (Origen) */
+
 .point-origen::before {
     content: '';
     position: absolute;
@@ -180,7 +179,7 @@ ion-menu.custom-menu ion-content {
     z-index: 2;
 }
 
-/* Punto Blanco/Hueco (Destino) */
+
 .point-destino::before {
     content: '';
     position: absolute;

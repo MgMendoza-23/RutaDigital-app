@@ -24,7 +24,7 @@ const TodasLasRutas: React.FC = () => {
 
   return (
     <IonPage>
-      {/* HEADER VERDE CURVO (Reutilizado) */}
+      {/* HEADER VERDE CURVO  */}
       <div className="curved-header-bg">
         <div style={{display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center'}}>
             <IonButtons>
@@ -58,7 +58,7 @@ const TodasLasRutas: React.FC = () => {
                         <span><IonIcon icon={timeOutline} style={{verticalAlign: 'middle'}}/> {ruta.duracion}</span>
                         <span><IonIcon icon={bus} style={{verticalAlign: 'middle'}}/> Bus Ejecutivo</span>
                     </div>
-                    {/* Botón visual (La lógica de reserva completa está en BuscarViajes, aquí solo mostramos) */}
+                    {/* Botón visual  */}
                     <IonButton expand="block" fill="outline" style={{marginTop: '15px'}}>
                         Ver Detalles
                     </IonButton>

@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     setCargando(true);
     let resultado;
 
-    // Validación simple
+    // Validación normal
     if(!email || !password) {
         setMensaje("Por favor completa todos los campos");
         setMostrarToast(true);
@@ -75,20 +75,20 @@ const Login: React.FC = () => {
     <IonPage>
       <IonContent fullscreen>
         
-        {/* Contenedor Principal con CSS */}
+      
         <div className="login-container ion-padding">
             
-            {/* Logo y Título */}
+            
             <div className="header-logo">
                 <IonIcon icon={bus} className="logo-icon" />
                 <div className="app-title">RutaDigital</div>
                 <div className="app-subtitle">Tu viaje, mejor conectado</div>
             </div>
 
-            {/* Formulario */}
+            
             <div>
 
-                {/* Campo Email */}
+               
                 <IonItem lines="none" className="custom-input">
                     <IonIcon icon={mailOutline} slot="start" color="medium" />
                     <IonLabel position="floating" color="medium">Email</IonLabel>
@@ -99,7 +99,7 @@ const Login: React.FC = () => {
                     />
                 </IonItem>
 
-                {/* Campo Password */}
+                
                 <IonItem lines="none" className="custom-input">
                     <IonIcon icon={lockClosedOutline} slot="start" color="medium" />
                     <IonLabel position="floating" color="medium">Contraseña</IonLabel>
@@ -112,7 +112,7 @@ const Login: React.FC = () => {
 
                 {esRegistro && (
                     <>
-                        {/* Campo Nombre */}
+                        
                         <IonItem lines="none" className="custom-input">
                             <IonIcon icon={personOutline} slot="start" color="medium" />
                             <IonLabel position="floating" color="medium">Nombre Completo</IonLabel>
@@ -123,7 +123,7 @@ const Login: React.FC = () => {
                             />
                         </IonItem>
 
-                        {/* Campo Teléfono */}
+                        
                         <IonItem lines="none" className="custom-input">
                             <IonIcon icon={callOutline} slot="start" color="medium" />
                             <IonLabel position="floating" color="medium">Teléfono Móvil</IonLabel>
@@ -136,7 +136,7 @@ const Login: React.FC = () => {
                     </>
                 )}
 
-                {/* Botón Principal */}
+                
                 <IonButton 
                     expand="block" 
                     className="login-button" 
@@ -148,7 +148,7 @@ const Login: React.FC = () => {
             </div>
 
 
-            {/* Footer (Cambiar modo) */}
+            
             <div className="footer-text">
                 {esRegistro ? "¿Ya tienes cuenta? " : "¿Nuevo usuario? "}
                 <span className="link-action" onClick={() => setEsRegistro(!esRegistro)}>
@@ -158,7 +158,7 @@ const Login: React.FC = () => {
 
         </div>
 
-        {/* Feedback visual */}
+        
         <IonLoading isOpen={cargando} message="Procesando..." spinner="crescent" />
         <IonToast
           isOpen={mostrarToast}

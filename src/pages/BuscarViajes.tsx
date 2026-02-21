@@ -8,25 +8,25 @@ import {
 import { locationOutline, calendarOutline, personCircleOutline, arrowForward, timeOutline, bus } from 'ionicons/icons';
 import { buscarRutasUsuario, crearReserva, Ruta, supabase } from '../services/supabase';
 import { useHistory } from 'react-router-dom';
-import '../theme/variables.css'; // Importamos las variables de colores
+import '../theme/variables.css'; 
 
 const BuscarViajes: React.FC = () => {
   const history = useHistory();
   
-  // Estados de datos
+  // sstados de datos
   const [tipoViaje, setTipoViaje] = useState('ida');
   const [origen, setOrigen] = useState('');
   const [destino, setDestino] = useState('');
   const [fechaSalida, setFechaSalida] = useState('');
-  const [fechaRetorno, setFechaRetorno] = useState(''); // Nuevo estado para Retorno
+  const [fechaRetorno, setFechaRetorno] = useState(''); 
   
-  // Estados de lógica
+  // estados para logica funcional
   const [resultados, setResultados] = useState<Ruta[]>([]);
   const [mensaje, setMensaje] = useState('');
   const [mostrarToast, setMostrarToast] = useState(false);
   const [busco, setBusco] = useState(false);
 
-  // Limpiar al entrar
+  
   useIonViewWillEnter(() => {
     setOrigen('');
     setDestino('');
@@ -38,7 +38,7 @@ const BuscarViajes: React.FC = () => {
 
   const buscar = async () => {
     setBusco(true);
-    // Nota: Aquí podrías añadir lógica para filtrar también por fecha si quisieras
+    
     const { data } = await buscarRutasUsuario(origen, destino);
     if (data) {
       setResultados(data as Ruta[]);
@@ -67,7 +67,7 @@ const BuscarViajes: React.FC = () => {
 
   return (
     <IonPage>
-      {/* Header Verde Curvo */}
+      
       <div className="curved-header-bg">
         <div style={{display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center'}}>
             <IonButtons>
@@ -87,7 +87,7 @@ const BuscarViajes: React.FC = () => {
             <h1 style={{fontFamily: 'serif', marginTop: '10px', fontSize: '28px'}}>Reservación</h1>
         </IonText>
 
-        {/* --- SELECTOR TIPO DE VIAJE --- */}
+        
         <div style={{background: '#e0e0e0', borderRadius: '25px', padding: '4px', margin: '20px 0'}}>
             <IonSegment 
                 value={tipoViaje} 
@@ -104,9 +104,9 @@ const BuscarViajes: React.FC = () => {
             </IonSegment>
         </div>
 
-        {/* --- INPUTS --- */}
+       
         
-        {/* Origen */}
+        
         <div className="input-card" style={{display:'flex', alignItems:'center', padding:'5px 15px'}}>
             <IonIcon icon={locationOutline} className="input-icon" />
             <IonInput 
@@ -117,7 +117,7 @@ const BuscarViajes: React.FC = () => {
             />
         </div>
 
-        {/* Destino */}
+        
         <div className="input-card" style={{display:'flex', alignItems:'center', padding:'5px 15px'}}>
             <IonIcon icon={locationOutline} className="input-icon" />
             <IonInput 
@@ -128,7 +128,7 @@ const BuscarViajes: React.FC = () => {
             />
         </div>
 
-        {/* --- FECHAS DINÁMICAS (AQUÍ ESTÁ EL CAMBIO) --- */}
+        
         <div style={{display: 'flex', gap: '15px', width: '100%'}}>
             
             {/* Input Salida */}
@@ -136,13 +136,13 @@ const BuscarViajes: React.FC = () => {
                 display:'flex', 
                 alignItems:'center', 
                 padding:'5px 15px', 
-                /* Si es vuelta ocupa mitad, si es ida ocupa 55% (como en la foto) */
+                /* Si es vuelta ocupa mitad, si es ida ocupa 55% */
                 flex: tipoViaje === 'vuelta' ? '1' : '0 0 55%'
             }}>
                 <IonIcon icon={calendarOutline} className="input-icon" />
                 <IonInput 
                     placeholder="Salida"
-                    type="date" // O "text" si prefieres que se vea el placeholder 'Salida'
+                    type="date" 
                     value={fechaSalida}
                     onIonChange={e => setFechaSalida(e.detail.value!)}
                     style={{'--padding-start': '0'}}
