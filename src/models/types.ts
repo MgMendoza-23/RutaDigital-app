@@ -11,7 +11,7 @@ export interface Ruta {
     precio: number;
     duracion?: string;
     horarios?: Horario[];
-    fecha_salida?: string;
+    fecha_salida: string;
 }
 
 export interface Reserva {

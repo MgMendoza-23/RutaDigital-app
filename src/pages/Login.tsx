@@ -85,10 +85,10 @@ const Login: React.FC = () => {
 
       setMensaje(esRegistro ? "¡Cuenta creada! Bienvenido." : `Bienvenido ${nombre || ''}`);
       setMostrarToast(true);
-
+//redireccion con retardo
       setTimeout(() => {
         if (rol === 'admin') {
-          console.log("Usuario es ADMIN -> Panel");
+          console.log("Usuario es ADMIN -> Panel"); 
           window.location.href = '/admin-rutas';
         } else {
           console.log("Usuario es CLIENTE -> Buscador");

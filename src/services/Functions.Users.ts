@@ -14,13 +14,24 @@ Funciones en Archivo Functions.Users.ts
 
 
 // Buscar rutas Usuario
-export const buscarRutasUsuario = async (origen: string, destino: string) => {
+export const buscarRutasUsuario = async (origen: string, destino: string, fecha:string) => {
     let query = supabase.from('rutas').select('*');
+    
+    if(origen){
+        query = query.ilike('origen',`%${origen}%`);
+    }
+    if(destino){
+        query = query.ilike('destino',`%${destino}%`);
+    }
+    if(fecha){
+        const inicioDia = `${fecha}T00:00:00`;
+        const finDia = `${fecha}T23:59:59`;
 
-    if (origen) query = query.ilike('origen', `%${origen}%`);
-    if (destino) query = query.ilike('destino', `%${destino}%`);
-
-    return await query;
+        query = query
+            .gte('fecha_salida', inicioDia)
+            .lte('fecha_salida', finDia);
+    }
+    return await query.order('fecha_salida', {ascending:true})
 };
 
 // Crear reserva

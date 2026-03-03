@@ -7,33 +7,8 @@ import {
 } from '@ionic/react';
 import { locationOutline, calendarOutline, personCircleOutline, arrowForward, timeOutline, bus } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
-
-// importamos archivo css
 import '../CSS/variables.css'; 
-
-/*
-Funciones en Archivo "../services/Functions.Users.ts"
-
--> Buscar rutas Usuario
--> Crear reserva
--> Obtener Mis Reservas
--> Obtener rol usuario al loguear
-
-
-Funciones en Archivo "..//API/supabase.ts"
-
--> supabase
-
-*/
-
-// obteniendo el modelo de datos de las rutas
-import { Ruta } from "../models/types";
-import { supabase } from '../API/supabase';
-
-
-import { buscarRutasUsuario, crearReserva} from '../services/Functions.Users';
-
-
+import { useBuscarViajes } from "../hooks/userBuscarViajes"
 
 const BuscarViajes: React.FC = () => {
     const history = useHistory();
@@ -45,50 +20,22 @@ const BuscarViajes: React.FC = () => {
     const [fechaSalida, setFechaSalida] = useState('');
     const [fechaRetorno, setFechaRetorno] = useState(''); 
 
-
-    const [resultados, setResultados] = useState<Ruta[]>([]);
-    const [mensaje, setMensaje] = useState('');
-    const [mostrarToast, setMostrarToast] = useState(false);
-    const [busco, setBusco] = useState(false);
-
-
     useIonViewWillEnter(() => {
     setOrigen('');
     setDestino('');
     setFechaSalida('');
     setFechaRetorno('');
-    setResultados([]);
-    setBusco(false);
     });
 
-    const buscar = async () => {
-    setBusco(true);
-    
-    const { data } = await buscarRutasUsuario(origen, destino);
-    if (data) {
-        setResultados(data as Ruta[]);
-    }
-};
-
-const reservar = async (ruta: Ruta) => {
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-        setMensaje("⚠️ Necesitas iniciar sesión para reservar");
-        setMostrarToast(true);
-        return;
-    }
-
-    const { error } = await crearReserva(ruta.id!, user.id);
-
-    if (error) {
-        setMensaje(" Error: " + error.message);
-    } else {
-        setMensaje(` ¡Reserva confirmada a ${ruta.destino}!`);
-        setResultados([]); 
-    }
-    setMostrarToast(true);
-    };
+const {
+    resultados,
+    mensaje,
+    mostrarToast,
+    busco,
+    buscar,
+    reservar,
+    setMostrarToast
+} = useBuscarViajes();
 
     return (
     <IonPage>
@@ -131,7 +78,7 @@ const reservar = async (ruta: Ruta) => {
         
         
         <div className="input-card" style={{display:'flex', alignItems:'center', padding:'5px 15px'}}>
-            <IonIcon icon={locationOutline} className="input-icon" />
+            <IonIcon icon={locationOutline} className="input-icon" /> 
             <IonInput 
                 placeholder="Origen" 
                 value={origen} 
@@ -193,7 +140,7 @@ const reservar = async (ruta: Ruta) => {
         <IonButton 
             expand="block" 
             className="ion-margin-top"
-            onClick={buscar}
+            onClick={()=> buscar(origen,destino,fechaSalida)}
             style={{
                 '--background': 'var(--ion-color-primary)', 
                 '--box-shadow': '0 4px 10px rgba(27, 160, 152, 0.4)',
@@ -217,17 +164,56 @@ const reservar = async (ruta: Ruta) => {
                 {resultados.map((ruta) => (
                     <IonCard key={ruta.id} style={{borderRadius: '15px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', marginBottom: '20px', background: 'white'}}>
                         <IonCardContent>
-                            <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 'bold', color: '#333'}}>
-                                <span>{ruta.origen} <IonIcon icon={arrowForward}/> {ruta.destino}</span>
-                                <span style={{color: 'var(--ion-color-primary)'}}>${ruta.precio}</span>
+                            <div style={{
+                                display: 'flex', 
+                                justifyContent: 'space-between', 
+                                fontSize: '18px', 
+                                fontWeight: 'bold', 
+                                color: '#333'
+                                }}>
+
+                                <span>
+                                    {ruta.origen} <IonIcon icon={arrowForward}/> {ruta.destino}
+                                </span>
+                                <span style={{color: 'var(--ion-color-primary)'}}>
+                                    ${ruta.precio}
+                                </span>
                             </div>
-                            <div style={{display: 'flex', gap: '15px', marginTop: '10px', color: '#666'}}>
-                                <span><IonIcon icon={timeOutline} style={{verticalAlign: 'middle'}}/> {ruta.duracion}</span>
-                                <span><IonIcon icon={bus} style={{verticalAlign: 'middle'}}/> Bus Ejecutivo</span>
-                            </div>
-                            <IonButton expand="block" fill="outline" style={{marginTop: '15px'}} onClick={() => reservar(ruta)}>
-                                Reservar Ahora
-                            </IonButton>
+
+                            <div style={{
+                                display: 'flex', 
+                                gap: '15px', 
+                                marginTop: '10px', 
+                                color: '#666',
+                                alignItems:'center'
+                            }}>
+                            <span style={{color:'green'
+                                }}>
+                                <IonIcon icon={timeOutline} style={{verticalAlign: 'middle'
+                                }}/> 
+                                {new Date(ruta.fecha_salida).toLocaleTimeString('es-MX', {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: true,
+                                    timeZone: 'America/Mexico_City'
+                                })}
+                            </span>
+                            <span>
+                                {ruta.duracion}
+                            </span>
+                            <span>
+                                <IonIcon icon={bus} style={{verticalAlign: 'middle'}}/> 
+                                Bus Ejecutivo
+                            </span>
+                        </div>
+                        <IonButton 
+                        expand="block" 
+                        fill="outline" 
+                        style={{marginTop: '15px'}} 
+                        onClick={() => reservar(ruta)}
+                        >
+                            Reservar Ahora
+                        </IonButton>
                         </IonCardContent>
                     </IonCard>
                 ))}
