@@ -2,10 +2,10 @@ import { Redirect, Route } from "react-router-dom";
 import { IonRouterOutlet, IonPage, IonSpinner } from "@ionic/react";
 
 
-import Login from "../pages/Login";
-import BuscarViajes from "../pages/BuscarViajes";
-import AdminRutas from "../pages/AdminRutas";
-import TodasLasRutas from "../pages/TodasLasRutas";
+import Login from "../screens/Login";
+import BuscarViajes from "../screens/BuscarViajes";
+import AdminRutas from "../screens/AdminRutas";
+import TodasLasRutas from "../screens/TodasLasRutas";
 
 import ProtectedRoute from "../routes/ProtectedRoute";
 import { useAuth } from "../Context/AuthContext";

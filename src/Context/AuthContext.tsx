@@ -22,9 +22,11 @@ export const AuthProvider: React.FC <{children: React.ReactNode}> = ({ children 
 
                 if (session?.user) {
                 console.log("3. Usuario detectado, buscando rolen BD...");
-                setUser(session.user);
+
                 const userRole = await obtenerRolUsuario(session.user.id);
-                console.log("4. Rol obtenido:", userRole)
+                console.log("4. Rol obtenido:", userRole);
+
+                setUser(session.user);
                 setRole(userRole);
             }else {
                 console.log("3. No hay usuario logueado. pantalla limpia.");
@@ -50,11 +52,13 @@ export const AuthProvider: React.FC <{children: React.ReactNode}> = ({ children 
         }, 5000);
 
         const { data: {subscription} } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            setUser(session?.user || null);
+            
             if (session?.user) {
                 const userRole = await obtenerRolUsuario(session.user.id);
+                setUser(session.user);
                 setRole(userRole);
             } else {
+                setUser(null);
                 setRole(null);
             }
 

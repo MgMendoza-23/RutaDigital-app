@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {IonContent, IonPage, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonLoading, IonToast} from '@ionic/react';
 import { mailOutline, lockClosedOutline, logInOutline, personAddOutline, bus, personOutline, callOutline, warningOutline, checkmarkCircleOutline } from 'ionicons/icons';
-
+import { useHistory } from 'react-router-dom';
 //importamos archivo css
 
 import "../CSS/Login.css";
@@ -35,6 +35,7 @@ import { obtenerRolUsuario } from '../services/Functions.Users';
 
 
 const Login: React.FC = () => {
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [esRegistro, setEsRegistro] = useState(false);
@@ -86,15 +87,17 @@ const Login: React.FC = () => {
       setTimeout(() => {
         if (rol === 'admin') {
           console.log("Usuario es ADMIN -> Panel"); 
-          window.location.href = '/admin-rutas';
+          history.replace('/admin-rutas');
         } else {
           console.log("Usuario es CLIENTE -> Buscador");
-          window.location.href = '/buscar-viajes';
+          history.replace('/buscar-viajes');
     }
-  }, 700);
-
     setEmail('');
     setPassword('');
+    setMostrarToast(false);
+  }, 700);
+
+    
     }
   }
 };
