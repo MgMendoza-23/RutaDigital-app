@@ -1,14 +1,18 @@
+import React from "react";
 import {IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle} from "@ionic/react";
 import { personCircleOutline } from "ionicons/icons";
 import { cerrarSesion } from "../services/Functions.Auth";
+import { useAuth } from "../Context/AuthContext";
 
 const Sidebar: React.FC = () => {
+  const { role } = useAuth();
+
   const manejarCerrarSesion = async () => {
     try {
       await cerrarSesion();
 
     } catch (error) {
-      console.warn("Supabase tardó en responder");
+      console.warn("Cierre forzado local");
     } finally {
       localStorage.clear();
       sessionStorage.clear();
@@ -36,14 +40,24 @@ const Sidebar: React.FC = () => {
               <IonLabel>Rutas</IonLabel>
             </IonItem>
 
-            <IonItem routerLink="/mis-reservas" className="menu-item">
-              <IonLabel>Reservaciones</IonLabel>
-            </IonItem>
+            {role === 'admin' && (
+              <IonItem routerLink="/admin-rutas" className="menu-item" detail={false}>
+                <IonLabel>Panel de Control</IonLabel>
+              </IonItem>
+            )}
 
-            <IonItem routerLink="/historial" className="menu-item">
+            {role === 'usuario' && (
+              <>
+              <IonItem routerLink="/mis-reservas" className="menu-item">
+              <IonLabel>Reservaciones</IonLabel>
+              </IonItem>
+
+              <IonItem routerLink="/historial" className="menu-item">
               <IonLabel>Historial de Viajes</IonLabel>
             </IonItem>
-
+              </>
+            )}
+           
           </IonMenuToggle>
         </IonList>
 
@@ -56,7 +70,7 @@ const Sidebar: React.FC = () => {
 
           <div className="menu-profile">
             <IonIcon icon={personCircleOutline} size="large" />
-            <span>Perfil</span>
+            <span>{role === 'admin' ? 'Administrador': 'Perfil'}</span>
           </div>
         </div>
 
