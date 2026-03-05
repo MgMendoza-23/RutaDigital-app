@@ -1,6 +1,5 @@
-
 import { Redirect, Route } from "react-router-dom";
-import { IonRouterOutlet } from "@ionic/react";
+import { IonRouterOutlet, IonPage, IonSpinner } from "@ionic/react";
 
 
 import Login from "../pages/Login";
@@ -8,20 +7,46 @@ import BuscarViajes from "../pages/BuscarViajes";
 import AdminRutas from "../pages/AdminRutas";
 import TodasLasRutas from "../pages/TodasLasRutas";
 
+import ProtectedRoute from "../routes/ProtectedRoute";
+import { useAuth } from "../Context/AuthContext";
+
 const AppRoutes: React.FC = () => {
-  return (
-    <IonRouterOutlet id="main-content">
+  const {user, role, loading } = useAuth();
 
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/buscar-viajes" component={BuscarViajes} />
-      <Route exact path="/todas-las-rutas" component={TodasLasRutas} />
-      <Route exact path="/admin-rutas" component={AdminRutas} />
+    return (
+      <IonRouterOutlet id="main-content">     
 
-      <Route exact path="/">
-        <Redirect to="/login" />
-      </Route>
+        <Route exact path="/login" render={() =>{
+          if (loading) {
+            return (
+              <IonPage style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <IonSpinner name="crescent" color="primary" />
+              </IonPage>
+            );
+          }
 
-    </IonRouterOutlet>
+          if (user) {
+            return <Redirect to={role === 'admin' ? '/admin-rutas' : '/buscar-viajes'} />;
+          }
+
+          return <Login />;
+          }} />
+
+          <ProtectedRoute exact path="/buscar-viajes" component={BuscarViajes} requiredRole="usuario" />
+          <ProtectedRoute exact path="/todas-las-rutas" component={TodasLasRutas} requiredRole="usuario" />
+
+          <ProtectedRoute
+            exact
+            path="/admin-rutas"
+            component={AdminRutas}
+            requiredRole="admin"
+            />
+
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+
+      </IonRouterOutlet>
   );
 };
 

@@ -1,16 +1,21 @@
-import {
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonMenu,
-  IonMenuToggle
-} from "@ionic/react";
-
+import {IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle} from "@ionic/react";
 import { personCircleOutline } from "ionicons/icons";
+import { cerrarSesion } from "../services/Functions.Auth";
 
 const Sidebar: React.FC = () => {
+  const manejarCerrarSesion = async () => {
+    try {
+      await cerrarSesion();
+
+    } catch (error) {
+      console.warn("Supabase tardó en responder");
+    } finally {
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.href = "/login";
+    }
+  };
+
   return (
     <IonMenu contentId="main-content" type="overlay" className="custom-menu">
       <IonContent className="menu-gradient">
@@ -44,7 +49,7 @@ const Sidebar: React.FC = () => {
 
         <div className="menu-footer">
           <IonMenuToggle autoHide={false}>
-            <IonItem button routerLink="/login" className="menu-item logout-item">
+            <IonItem button onClick={manejarCerrarSesion} className="menu-item logout-item">
               <IonLabel>Salir</IonLabel>
             </IonItem>
           </IonMenuToggle>

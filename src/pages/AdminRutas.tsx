@@ -91,9 +91,9 @@ const AdminRutas: React.FC = () => {
       setMensaje(resultado.error ? "Error al crear" : "Ruta creada exitosamente");
     }
 
-    // Solo limpiamos si no hubo error
+  
     if (!resultado.error) {
-      await cargarRutas(); // Forzamos la recarga de la lista
+      await cargarRutas(); 
       limpiarFormulario();
     }
     setMostrarToast(true);
@@ -143,7 +143,6 @@ const AdminRutas: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
-          {/* ¡AQUÍ ESTÁ LA MAGIA DEL MENÚ! Quitamos el BackButton y ponemos el MenuButton */}
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
@@ -301,7 +300,6 @@ const AdminRutas: React.FC = () => {
   );
 };
 
-// Función de ayuda para extraer el string puro de las fechas de Ionic
 const stringOrArrayToString = (val: string | string[] | null | undefined): string => {
     if (!val) return new Date().toISOString();
     if (Array.isArray(val)) return val[0];

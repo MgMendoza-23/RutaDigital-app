@@ -1,3 +1,5 @@
+import { User } from '@supabase/supabase-js';
+import { RouteProps } from 'react-router-dom';
 export interface Horario {
     salida: string;
     llegada: string;
@@ -20,4 +22,14 @@ export interface Reserva {
     ruta_id: number;
     created_at?: string;
     rutas?: Ruta;
+}
+
+export interface AuthContextType {
+    user: User | null;
+    role: string | null;
+    loading: boolean;
+}
+
+export interface ProtectedRouteProps extends RouteProps {
+    requiredRole?: 'admin' | 'usuario';
 }
