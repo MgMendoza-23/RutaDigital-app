@@ -24,14 +24,18 @@ export const obtenerRutas = async () => {
 };
 
 // Eliminar ruta
-export const eliminarRuta = async (id: number) => {
-    return await supabase.from('rutas').delete().eq('id', id);
+export const eliminarRuta = async (id: string | number) => {
+    return await supabase
+    .from('rutas')
+    .delete()
+    .eq('id', Number(id));
 };
 
 // Actualizar ruta
-export const actualizarRuta = async (idRuta: string, nuevosDatos: Ruta) => {
+export const actualizarRuta = async (idRuta: string | number, nuevosDatos: Ruta) => {
     return await supabase
     .from('rutas')
     .update(nuevosDatos)
-    .eq('id', idRuta);
+    .eq('id', Number(idRuta))
+    .select();
 };
