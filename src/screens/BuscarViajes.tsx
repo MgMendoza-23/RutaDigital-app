@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import {
-  IonContent, IonPage, IonInput, IonButton,
+  IonContent, IonPage, IonButton,
   IonIcon, IonButtons, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonText,
   IonToast, IonCard, IonCardContent,
-  useIonViewWillEnter
+  useIonViewWillEnter,
+  IonSelect, IonSelectOption, IonDatetime, IonDatetimeButton, IonModal
 } from '@ionic/react';
 import { locationOutline, calendarOutline, personCircleOutline, arrowForward, timeOutline, bus } from 'ionicons/icons';
 
@@ -11,15 +12,26 @@ import { locationOutline, calendarOutline, personCircleOutline, arrowForward, ti
 import '../CSS/variables.css';
 import { useBuscarViajes } from '../hooks/userBuscarViajes';
 
+const CIUDADES_DISPONIBLES = [
+  "Palenque, Chiapas",
+  "Tenosique, Tabasco",
+  "Balancan, Tabasco",
+  "Emiliano Zapata, Tabasco",
+  "Villahermosa, Tabasco",
+  "Escarsega, Tabasco",
+  "Comitan, Chiapas"
+];
+
+
 const BuscarViajes: React.FC = () => {
-  // 1. Estados locales solo para la Interfaz de Usuario (Formulario)
+  // Estados locales solo para la Interfaz de Usuario (Formulario)
   const [tipoViaje, setTipoViaje] = useState('ida');
   const [origen, setOrigen] = useState('');
   const [destino, setDestino] = useState('');
   const [fechaSalida, setFechaSalida] = useState('');
   const [fechaRetorno, setFechaRetorno] = useState('');
 
-  // 2. Extraemos la lógica de negocio desde nuestro Custom Hook
+  // Extraemos la lógica de negocio desde nuestro Custom Hook
   const {
     resultados,
     mensaje,
@@ -60,7 +72,7 @@ const BuscarViajes: React.FC = () => {
         <div style={{ background: '#e0e0e0', borderRadius: '25px', padding: '4px', margin: '20px 0' }}>
           <IonSegment
             value={tipoViaje}
-            onIonChange={e => setTipoViaje(e.detail.value!)}
+            onIonChange={e => setTipoViaje(e.detail.value as string)}
             mode="ios"
             style={{ background: 'transparent' }}
           >
@@ -74,57 +86,91 @@ const BuscarViajes: React.FC = () => {
         </div>
 
         <div className="input-card" style={{ display: 'flex', alignItems: 'center', padding: '5px 15px' }}>
-          <IonIcon icon={locationOutline} className="input-icon" />
-          <IonInput
+          <IonIcon icon={locationOutline} className="input-icon" color="medium" />
+          <IonSelect
             placeholder="Origen"
             value={origen}
-            onIonChange={e => setOrigen(e.detail.value!)}
-            style={{ '--padding-start': '0' }}
-          />
+            onIonChange={e => setOrigen(e.detail.value)}
+            interface="action-sheet"
+            style={{ width: '100%', '--padding-start': '0' }}
+          >
+          {CIUDADES_DISPONIBLES.map(ciudad => (
+            <IonSelectOption key={"origen-" + ciudad} value={ciudad}>
+              {ciudad}
+              </IonSelectOption>
+          ))}
+          </IonSelect>
         </div>
 
         <div className="input-card" style={{ display: 'flex', alignItems: 'center', padding: '5px 15px' }}>
-          <IonIcon icon={locationOutline} className="input-icon" />
-          <IonInput
+          <IonIcon icon={locationOutline} className="input-icon" color="medium" />
+          <IonSelect
             placeholder="Destino"
             value={destino}
-            onIonChange={e => setDestino(e.detail.value!)}
-            style={{ '--padding-start': '0' }}
-          />
+            onIonChange={e => setDestino(e.detail.value)}
+            interface="action-sheet"
+            style={{ width: '100%', '--padding-start': '0' }}
+          >
+            {CIUDADES_DISPONIBLES
+            .filter(ciudad => ciudad !== origen)
+            .map(ciudad => (
+              <IonSelectOption key={"destino-" + ciudad} value={ciudad}>
+                {ciudad}
+              </IonSelectOption>
+            ))}
+            </IonSelect>
         </div>
 
-        <div style={{ display: 'flex', gap: '15px', width: '100%' }}>
+        <div style={{ display: 'flex', gap: '15px', width: '100%', marginTop: '15px' }}>
           <div className="input-card" style={{
+            padding: '10px 15px',
+            flex: tipoViaje === 'vuelta' ? '1' : '0 0 100%',
             display: 'flex',
-            alignItems: 'center',
-            padding: '5px 15px',
-            flex: tipoViaje === 'vuelta' ? '1' : '0 0 55%'
+            flexDirection: 'column',
+            justifyContent: 'center'
           }}>
-            <IonIcon icon={calendarOutline} className="input-icon" />
-            <IonInput
-              placeholder="Salida"
-              type="date"
-              value={fechaSalida}
-              onIonChange={e => setFechaSalida(e.detail.value!)}
-              style={{ '--padding-start': '0' }}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+            <IonIcon icon={calendarOutline} color="medium" style={{ marginRigth: '8px' }} />
+            <IonLabel color="medium" style={{ fontSize: '14px', fontWeight: 'bold' }}>Salida</IonLabel>
+              </div>
+            <IonDatetimeButton datetime="salida-buscador"></IonDatetimeButton>
+            <IonModal keepContentsMounted={true}>
+              <IonDatetime 
+                id="salida-buscador" 
+                presentation="date" 
+                mode="ios"
+                showDefaultButtons={true}
+                doneText="Confirmar"
+                cancelText="Cancelar"
+                min={new Date().toDateString()}
+                value={fechaSalida || undefined}
+                onIonChange={e => setFechaSalida(e.detail.value as string)}
+              ></IonDatetime>
+            </IonModal>
           </div>
 
           {tipoViaje === 'vuelta' && (
             <div className="input-card" style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: '5px 15px',
-              flex: '1'
-            }}>
-              <IonIcon icon={calendarOutline} className="input-icon" />
-              <IonInput
-                placeholder="Retorno"
-                type="date"
-                value={fechaRetorno}
-                onIonChange={e => setFechaRetorno(e.detail.value!)}
-                style={{ '--padding-start': '0' }}
-              />
+             padding: '10px 15px', flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                <IonIcon icon={calendarOutline} color="medium" style={{ marginRigth: '8px' }} />
+                <IonLabel color="medium" style={{ fontSize: '14px', fontWeight: 'bold' }}>Retorno</IonLabel>
+                </div>
+              <IonDatetimeButton datetime="retorno-buscador"></IonDatetimeButton>
+              
+              <IonModal keepContentsMounted={true}>
+                <IonDatetime 
+                  id="retorno-buscador" 
+                  presentation="date" 
+                  mode="ios"
+                  showDefaultButtons={true}
+                  doneText="Confirmar"
+                  cancelText="Cancelar"
+                  min={ fechaSalida || new Date().toDateString()}
+                  value={fechaRetorno || undefined}
+                  onIonChange={e => setFechaRetorno(e.detail.value as string)}
+                ></IonDatetime>
+                </IonModal>
             </div>
           )}
         </div>
