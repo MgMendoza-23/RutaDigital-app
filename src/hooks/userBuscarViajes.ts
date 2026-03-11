@@ -18,7 +18,8 @@ export const useBuscarViajes = () => {
 
         setBusco(true);
 
-        const {data, error} = await buscarRutasUsuario(origen, destino, fecha);
+        const soloFecha = fecha.split('T')[0];
+        const {data, error} = await buscarRutasUsuario(origen, destino, soloFecha);
 
         if(error){
             setMensaje("Error al buscar rutas");
