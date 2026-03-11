@@ -11,7 +11,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component, r
     return (
         <Route {...rest} render={(props) =>{
             if (loading) 
-                return <IonPage></IonPage>
+                return <IonPage></IonPage>;
 
             if (!user) {
                 return <Redirect to="/login" />;

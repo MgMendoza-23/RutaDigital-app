@@ -197,7 +197,7 @@ const BuscarViajes: React.FC = () => {
 
         {resultados.length > 0 && (
           <div>
-            <h3 style={{ fontFamily: 'serif' }}>Resultados ({resultados.length})</h3>
+            <h3 style={{ fontFamily: 'serif' }}>Rutas Disponibles ({resultados.length})</h3>
             {resultados.map((ruta) => (
               <IonCard key={ruta.id} style={{ borderRadius: '15px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', marginBottom: '20px', background: 'white' }}>
                 <IonCardContent>

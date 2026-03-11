@@ -16,7 +16,7 @@ export const AuthProvider: React.FC <{children: React.ReactNode}> = ({ children 
         const inicializarSesion = async () => {
             console.log("1. Iniciando verificación de sesión");
             try {
-                const { data: { session}, error } = await supabase.auth.getSession();
+                const { data: { session }, error } = await supabase.auth.getSession();
                 console.log("2. Respuesta de supabese recivida.");
                 if (error) throw error;
 
@@ -29,7 +29,7 @@ export const AuthProvider: React.FC <{children: React.ReactNode}> = ({ children 
                 setUser(session.user);
                 setRole(userRole);
             }else {
-                console.log("3. No hay usuario logueado. pantalla limpia.");
+                console.log("3. No hay usuario logueado");
             }
         } catch (error) {
             console.error("Error critico en AunthContext:", error);

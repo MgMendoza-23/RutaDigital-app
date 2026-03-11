@@ -5,7 +5,7 @@ import { Ruta } from "../models/types";
 Funciones en Archivo Functions.Admin.ts
 
 -> Crear ruta
--> Obtener rutas
+-> Obtener rutas 
 -> Eliminar ruta
 -> Actualizar ruta
 

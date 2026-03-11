@@ -19,12 +19,14 @@ Funciones en Archivo Functions.Admin.ts
 
 */
 const CIUDADES_DISPONIBLES = [
-  "Ciudad de México",
-  "Monterrey",
-  "Guadalajara",
-  "Puebla",
-  "Morelia",
-  "Querétaro"];
+  "Palenque, Chiapas",
+  "Tenosique, Tabasco",
+  "Balancan, Tabasaco",
+  "Emiliano Zapata, Tabasco",
+  "Villahermosa, Tabasco",
+  "Escarsega, Tabasco",
+  "Comitan, Chiapas"
+];
 
 
 

@@ -6,6 +6,7 @@ import Login from "../screens/Login";
 import BuscarViajes from "../screens/BuscarViajes";
 import AdminRutas from "../screens/AdminRutas";
 import TodasLasRutas from "../screens/TodasLasRutas";
+import DetallesReserva from "../screens/DetallesReserva";
 
 import ProtectedRoute from "../routes/ProtectedRoute";
 import { useAuth } from "../Context/AuthContext";
@@ -34,12 +35,8 @@ const AppRoutes: React.FC = () => {
 
           <ProtectedRoute exact path="/buscar-viajes" component={BuscarViajes} requiredRole="usuario" />
           <ProtectedRoute exact path="/todas-las-rutas" component={TodasLasRutas} requiredRole="usuario" />
-
-          <ProtectedRoute
-            exact
-            path="/admin-rutas"
-            component={AdminRutas}
-            requiredRole="admin"
+          <ProtectedRoute exact path="/detalles-reserva" component={DetallesReserva} requiredRole="usuario" />
+          <ProtectedRoute exact path="/admin-rutas" component={AdminRutas} requiredRole="admin"
             />
 
           <Route exact path="/">

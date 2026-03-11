@@ -13,6 +13,7 @@ const Sidebar: React.FC = () => {
 
     } catch (error) {
       console.warn("Cierre forzado local");
+      console.log("Error", error)
     } finally {
       localStorage.clear();
       sessionStorage.clear();

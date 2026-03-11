@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { supabase } from '../API/supabase';
-import { buscarRutasUsuario, crearReserva } from '../services/Functions.Users';
+import { buscarRutasUsuario } from '../services/Functions.Users';
 import { Ruta } from '../models/types';
+import { useHistory } from 'react-router';
 
 export const useBuscarViajes = () => {
+    const history = useHistory();
     const [resultados, setResultados] = useState<Ruta[]>([]);
     const [mensaje, setMensaje] = useState('');
     const [mostrarToast, setMostrarToast] = useState(false);
@@ -31,24 +32,10 @@ export const useBuscarViajes = () => {
     };
 
     const reservar = async (ruta: Ruta) => {
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-            setMensaje("Necesitas iniciar sesión");
-            setMostrarToast(true);
-            return;
-        }
-
-        const { error } = await crearReserva(ruta.id!, user.id);
-
-        if (error) {
-            setMensaje("Error: " + error.message);
-        } else {
-            setMensaje("Reserva confirmada");
-            setResultados([]);
-        }
-
-        setMostrarToast(true);
+       history.push({
+        pathname: '/detalles-reserva',
+        state: {ruta:ruta}
+       });
     };
 
 return {
