@@ -58,13 +58,38 @@ export const obtenerMisReservas = async (usuarioId: string) => {
 };
 
 // Obtener rol Usuario
-export const obtenerRolUsuario = async (userId: string) => {
-    const { data, error } = await supabase
-    .from('perfiles')
-    .select('rol')
-    .eq('id', userId)
-    .single();
+export const obtenerRolUsuario = async (userId: string): Promise<string> => {
+    let intentos = 3;
 
-    if (error) return 'usuario';
+    while (intentos > 0) {
+        console.log(`Buscando rol para el ID: ${userId} ( vidas restantes: ${intentos})`);
+
+        const { data, error } = await supabase
+        .from('perfiles')
+        .select('rol')
+        .eq('id', userId)
+        .single();
+
+        if (error) {
+            if (error.message.includes('AbortError')) {
+            console.warn("Petición abortada por el navegador. Reintentando...");
+            intentos--;
+            await new Promise(resolve => setTimeout(resolve, 500));
+            continue;
+        }
+
+        console.error("Error de supabase al buscar rol:", error);
+        return 'usuario'; 
+            
+    }
+
+    console.log("Exito, supabase devolvio esto:", data);
     return data?.rol || 'usuario';
+        
+}
+
+console.error("Se agotaron los intentos para buscar el rol.");
+return 'usuario';
+
 };
+

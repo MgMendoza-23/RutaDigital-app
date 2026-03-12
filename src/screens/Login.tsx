@@ -29,7 +29,7 @@ Funciones en Archivo Functions.Auth.ts
 */
 
 import { registrarUsuario, iniciarSesion } from '../services/Functions.Auth';
-import { obtenerRolUsuario } from '../services/Functions.Users';
+
 
 
 
@@ -46,61 +46,35 @@ const Login: React.FC = () => {
   const [telefono, setTelefono] = useState('');
 
   const manejarAuth = async () => {
-    setCargando(true);
-    let resultado;
-
-    // Validación normalita
-    if(!email || !password) {
-        setMensaje("Por favor completa todos los campos");
-        setMostrarToast(true);
-        setCargando(false);
-        return;
+    if (!email || !password) {
+      setMensaje("Por favor completa todos los campos");
+      setMostrarToast(true);
+      return;
     }
-
-    if (esRegistro && (!nombre || !telefono)) {
-            setMensaje("Por favor completa todos los campos");
-            setMostrarToast(true);
-            setCargando(false);
-            return;
-        }
+    setCargando(true);
 
     if (esRegistro) {
-      resultado = await registrarUsuario(email, password, nombre, telefono);
-    } else {
-      resultado = await iniciarSesion(email, password);
-    }
+      const {error} = await registrarUsuario(email, password, nombre, telefono);
 
+      if (error) {
+        setMensaje(error.message);
+      } else {
+        setMensaje(' Registro exitoso. Ahora puedes iniciar sesión.');
+        setEsRegistro(false);
+      }
+      setMostrarToast(true);
+
+    } else {
+      const {error} = await iniciarSesion(email, password);
+
+      if (error) {
+        setMensaje("Error: " + error.message);
+        setMostrarToast(true);
+      }
+
+    } 
     setCargando(false);
-
-    if (resultado.error) {
-      setMensaje("Error: " + resultado.error.message);
-      setMostrarToast(true);
-    } else {
-     
-    if (resultado.data && resultado.data.user) {
-      const rol = await obtenerRolUsuario(resultado.data.user.id);
-
-      setMensaje(esRegistro ? "¡Cuenta creada! Bienvenido." : `Bienvenido ${nombre || ''}`);
-      setMostrarToast(true);
-
-//redireccion con retardo
-      setTimeout(() => {
-        if (rol === 'admin') {
-          console.log("Usuario es ADMIN -> Panel"); 
-          history.replace('/admin-rutas');
-        } else {
-          console.log("Usuario es CLIENTE -> Buscador");
-          history.replace('/buscar-viajes');
-    }
-    setEmail('');
-    setPassword('');
-    setMostrarToast(false);
-  }, 700);
-
-    
-    }
-  }
-};
+  };
 
   return (
     <IonPage>

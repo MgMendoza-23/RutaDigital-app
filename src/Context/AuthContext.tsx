@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState } from "react";
+import React, {createContext, useContext, useEffect, useState, useRef } from "react";
 import { supabase } from "../API/supabase";
 import { obtenerRolUsuario } from "../services/Functions.Users";
 
@@ -12,60 +12,56 @@ export const AuthProvider: React.FC <{children: React.ReactNode}> = ({ children 
     const [role, setRole] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
+    const inicializado = useRef(false);
+
     useEffect(() => {
-        const inicializarSesion = async () => {
-            console.log("1. Iniciando verificación de sesión");
+        let montado = true;
+
+        const arrancarApp = async () => {
+            if (inicializado.current) return;
+            inicializado.current = true;
+
             try {
                 const { data: { session }, error } = await supabase.auth.getSession();
-                console.log("2. Respuesta de supabese recivida.");
-                if (error) throw error;
 
-                if (session?.user) {
-                console.log("3. Usuario detectado, buscando rolen BD...");
-
-                const userRole = await obtenerRolUsuario(session.user.id);
-                console.log("4. Rol obtenido:", userRole);
-
-                setUser(session.user);
-                setRole(userRole);
-            }else {
-                console.log("3. No hay usuario logueado");
+                if (error) console.warn("Supabase se quejo, pero sigamos:", error);
+                if (session?.user && montado) {
+                    const userRole = await obtenerRolUsuario(session.user.id);
+                    if (montado) {
+                        setRole(userRole);
+                        setUser(session.user);
+                    }
+                }
+            } catch (err) {
+                console.error("Error silenciado en el arranque:", err);
+            } finally {
+                if (montado) setLoading(false);
             }
-        } catch (error) {
-            console.error("Error critico en AunthContext:", error);
-        } finally {
-            console.log("5. Finalizando carga (setLoading = false)");
-            setLoading(false);
-        }
-    };
+        };
 
-        inicializarSesion();    
+        arrancarApp();
 
-        const seguro = setTimeout(() => {
-            setLoading(estadoActual => {
-                if (estadoActual) {
-                    console.warn("Supabase tardo demasiado. Forzando el cierre de la pantalla de carga");
-                    return false;
-            }
-            return estadoActual;
-        });
-        }, 5000);
-
-        const { data: {subscription} } = supabase.auth.onAuthStateChange(async (_event, session) => {
+        const { data: {subscription} } = supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log("Evento de Supabase detectado:", event);
+            if (!montado ) return;
             
-            if (session?.user) {
-                const userRole = await obtenerRolUsuario(session.user.id);
-                setUser(session.user);
-                setRole(userRole);
-            } else {
-                setUser(null);
-                setRole(null);
-            }
+            if (event === 'SIGNED_IN' && session?.user) {
+                    setLoading(true);
+                    const userRole = await obtenerRolUsuario(session.user.id);
+                    setRole(userRole);
+                    setUser(session.user);
+                    setLoading(false);
+                } else if (event === 'SIGNED_OUT') {
+                    setUser(null);
+                    setRole(null);
+                    setLoading(false);
+                }
 
     }); 
 
     return () => {
-        clearTimeout(seguro);
+        //clearTimeout(seguro);
+        montado = false;
         subscription.unsubscribe();
     };
     }, []);
