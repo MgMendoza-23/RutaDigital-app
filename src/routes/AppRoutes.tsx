@@ -10,6 +10,7 @@ import DetallesReserva from "../screens/DetallesReserva";
 
 import ProtectedRoute from "../routes/ProtectedRoute";
 import { useAuth } from "../Context/AuthContext";
+import Reservaciones from "../screens/Reservaciones";
 
 const AppRoutes: React.FC = () => {
   const {user, role, loading } = useAuth();
@@ -38,6 +39,7 @@ const AppRoutes: React.FC = () => {
           <ProtectedRoute exact path="/detalles-reserva" component={DetallesReserva} requiredRole="usuario" />
           <ProtectedRoute exact path="/admin-rutas" component={AdminRutas} requiredRole="admin"
             />
+          <ProtectedRoute exact path="/reservaciones" component={Reservaciones} requiredRole="usuario"/>
 
           <Route exact path="/">
             <Redirect to="/login" />

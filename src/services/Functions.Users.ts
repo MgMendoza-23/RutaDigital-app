@@ -49,13 +49,37 @@ export const crearReserva = async (rutaId: number, usuarioId: string) => {
 export const obtenerMisReservas = async (usuarioId: string) => {
     return await supabase
     .from('reservas')
+    
     .select(`
-      *,
-        rutas:ruta_id (origen, destino, precio, duracion, salida)
+      id,
+      created_at,
+      usuario_id,
+      ruta_id,
+      cantidad,
+      estado,
+      rutas:rutas (
+        id,
+        origen,
+        destino,
+        precio,
+        duracion,
+        fecha_salida
+      )
     `)
     .eq('usuario_id', usuarioId)
     .order('created_at', { ascending: false });
 };
+
+
+export const cancelarReserva = async (reservaId: number, usuarioId: string) => {
+  return await supabase
+    .from('reservas')
+    .update({ estado: 'cancelado' })
+    .match({ id: Number(reservaId), usuario_id: usuarioId })
+    .select('id, estado')  // pedimos la fila confirmada
+    .maybeSingle();
+};
+
 
 // Obtener rol Usuario
 export const obtenerRolUsuario = async (userId: string): Promise<string> => {

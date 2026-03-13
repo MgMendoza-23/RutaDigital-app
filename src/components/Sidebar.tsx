@@ -49,7 +49,7 @@ const Sidebar: React.FC = () => {
 
             {role === 'usuario' && (
               <>
-              <IonItem routerLink="/mis-reservas" className="menu-item">
+              <IonItem routerLink="/reservaciones" className="menu-item">
               <IonLabel>Reservaciones</IonLabel>
               </IonItem>
 

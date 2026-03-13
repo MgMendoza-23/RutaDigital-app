@@ -1,0 +1,33 @@
+[33m54f1a4d[m[33m ([m[1;36mHEAD[m[33m)[m Creacion de interfaz de Reservas
+[33m7394324[m fix(auth): Refactorizacion de AuthContext para evitar la Condicion de Carrera y limpieza de estados en Login
+[33m6f47059[m Pequeñas actualizaciones y creación del archivo DetallesRerserva.tsx
+[33me3b29de[m Parche: solucion del en la busqueda de la ruta, limpiando la fecha para ser valida
+[33m88c9641[m Correciones en los estilos del calendario
+[33m5238b62[m Correcciones de detalles
+[33m7eb2a2a[m Cambio de nombre de pages a screens
+[33mc5d2e63[m Implementación y correción de algunas funciones para la mejora continua
+[33m826e680[m Creación e implementación para la proteccion de rutas en la navegación
+[33ma5e03a0[m Creacion e implementación de un Contexto para la validacion de roles y autentificaciones
+[33m7317dd4[m Mejora en el diseño UUX del formualrio, correccion de advertencias y limpieza de codigo muerto
+[33m62b931e[m Fix: Se corrigio errores de tipos de IDs y falsos positivos al actualizar ruta
+[33mf8c8dd7[m fix: resolución de conflictos en BuscarViajes e integegracion de custom hooks
+[33m135f3f7[m Filtrar rutas por la fecha
+[33m0109c27[m guardado del .gitinore para añadir .env a los archivos que nos se subiran a git por seguridad
+[33m23030f0[m Creacion de archivo .env para mover key-supabase, mejorando seguridad de datos
+[33m3d43075[m Modificacion de carpetas y archivos para mejor escalabilidad de codigo
+[33mff11d60[m Merge branch 'main' of https://github.com/MgMendoza-23/RutaDigital-app
+[33m33f5189[m Guardando cambios antes de actualizar
+[33m9f3155b[m Nueva actualizacion
+[33mb248c70[m Merge branch 'main' of https://github.com/MgMendoza-23/RutaDigital-app
+[33m26f0df1[m Actualización
+[33mb2c162e[m Actualización de la estrcutura y disñeo de la pantalla principal e incluso el filtrado de rutas por origin y destino
+[33m149aa1e[m Modificación en la estructura del login y el registro junto con los estilos de los mismos
+[33mfcfb3b8[m Modificaciones es los estilos
+[33m9d42130[m Verificacion y validación de los roles de user y admin
+[33m2a3cfa9[m Actualizacion del panel de administracion y modificación de estilos
+[33m2501e04[m Merge branch 'main' of https://github.com/MgMendoza-23/RutaDigital-app
+[33ma5c0e0c[m Guardando cambios antes de actualizar
+[33mf24af84[m Creacion, configuración del login incluyendo la authentificación y el manejo y disño del este mismo
+[33m5d6606f[m Merge branch 'main' of https://github.com/MgMendoza-23/RutaDigital-app
+[33m1896a3b[m Inicio de app
+[33m77a3865[m Initial commit
