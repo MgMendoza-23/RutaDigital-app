@@ -34,6 +34,7 @@ export interface AuthContextType {
 }
 
 export interface ProtectedRouteProps extends RouteProps {
+    component: React.ComponentType;
     requiredRole?: 'admin' | 'usuario';
 }
 

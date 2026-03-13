@@ -12,58 +12,53 @@ export const AuthProvider: React.FC <{children: React.ReactNode}> = ({ children 
     const [role, setRole] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const inicializado = useRef(false);
+    const inicializacion = useRef(false);
 
     useEffect(() => {
         let montado = true;
 
-        const arrancarApp = async () => {
-            if (inicializado.current) return;
-            inicializado.current = true;
+        const arrancarApp = async (sessionUser: User | null) => {
+            if (inicializacion.current) return;
+            console.log(" AuthContext: Iniciando verificacion inicial");
+            inicializacion.current= true;
+            setLoading(true);
 
             try {
-                const { data: { session }, error } = await supabase.auth.getSession();
-
-                if (error) console.warn("Supabase se quejo, pero sigamos:", error);
-                if (session?.user && montado) {
-                    const userRole = await obtenerRolUsuario(session.user.id);
+                if (sessionUser) {
+                    console.log(" AuthContext: sesion existente encontrada, buscando rol");
+                    const userRole = await obtenerRolUsuario(sessionUser.id);
                     if (montado) {
                         setRole(userRole);
-                        setUser(session.user);
-                    }
+                        setUser(sessionUser);
+                        console.log(`AuthContext: Sesión y Rol (${userRole}) cargados exitosamente.`);
                 }
-            } catch (err) {
-                console.error("Error silenciado en el arranque:", err);
+                    } else {
+                        if (montado) {
+                            setUser(null);
+                            setRole(null);
+                        }
+                    }
+            } catch (error) {
+                console.error("AuthContext: Error en AuthContext:", error);
             } finally {
                 if (montado) setLoading(false);
+                inicializacion.current = false;
+                console.log("AuthContext: finalizando carga inicial");
             }
         };
 
-        arrancarApp();
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            arrancarApp(session?.user || null);
+        });
 
-        const { data: {subscription} } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log("Evento de Supabase detectado:", event);
-            if (!montado ) return;
-            
-            if (event === 'SIGNED_IN' && session?.user) {
-                    setLoading(true);
-                    const userRole = await obtenerRolUsuario(session.user.id);
-                    setRole(userRole);
-                    setUser(session.user);
-                    setLoading(false);
-                } else if (event === 'SIGNED_OUT') {
-                    setUser(null);
-                    setRole(null);
-                    setLoading(false);
-                }
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            arrancarApp(session?.user || null);
+        });
 
-    }); 
-
-    return () => {
-        //clearTimeout(seguro);
-        montado = false;
-        subscription.unsubscribe();
-    };
+        return () => {
+            montado = false;
+            subscription.unsubscribe();
+        };
     }, []);
 
     return (
