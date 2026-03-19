@@ -12,7 +12,7 @@ export interface Ruta {
     destino: string;
     precio: number;
     duracion?: string;
-    horarios?: Horario[];
+    horarios?: string[];
     fecha_salida: string;
 }
 export type EstadoReserva = 'confirmado' | 'cancelado';

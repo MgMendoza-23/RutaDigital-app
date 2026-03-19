@@ -37,8 +37,7 @@ const AppRoutes: React.FC = () => {
           <ProtectedRoute exact path="/buscar-viajes" component={BuscarViajes} requiredRole="usuario" />
           <ProtectedRoute exact path="/todas-las-rutas" component={TodasLasRutas} requiredRole="usuario" />
           <ProtectedRoute exact path="/detalles-reserva" component={DetallesReserva} requiredRole="usuario" />
-          <ProtectedRoute exact path="/admin-rutas" component={AdminRutas} requiredRole="admin"
-            />
+          <ProtectedRoute exact path="/admin-rutas" component={AdminRutas} requiredRole="admin"/>
           <ProtectedRoute exact path="/reservaciones" component={Reservaciones} requiredRole="usuario"/>
 
           <Route exact path="/">

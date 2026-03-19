@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
   IonContent, IonPage, IonInput, IonButton, IonIcon, IonList, IonItem, IonLabel,
-  IonToast, IonDatetime, IonDatetimeButton, IonModal, IonButtons, IonMenuButton, IonHeader, IonToolbar, IonTitle, IonSelect, IonSelectOption
+  IonToast, IonDatetime, IonDatetimeButton, IonModal, IonButtons, IonMenuButton, 
+  IonHeader, IonToolbar, IonTitle, IonSelect, IonSelectOption, IonChip
 } from '@ionic/react';
-import { trash, createOutline, calendarOutline, timeOutline } from 'ionicons/icons';
+import { trash, createOutline, calendarOutline, timeOutline, addOutline, closeCircleOutline } from 'ionicons/icons';
 
 // importamos archivo css
 import '../CSS/variables.css';
@@ -41,7 +42,7 @@ const AdminRutas: React.FC = () => {
   const [rutas, setRutas] = useState<Ruta[]>([]);
   const [mensaje, setMensaje] = useState('');
   const [mostrarToast, setMostrarToast] = useState(false);
-
+  const [nuevaHora, setNuevaHora] = useState('');
   const [modoEdicion, setModoEdicion] = useState<number | null>(null);
   
   const [form, setForm] = useState({
@@ -49,6 +50,7 @@ const AdminRutas: React.FC = () => {
     destino: '',
     precio: '',
     duracion: '',
+    horarios: [] as string[],
     fecha_salida: new Date().toISOString()
   });
 
@@ -59,6 +61,18 @@ const AdminRutas: React.FC = () => {
   const cargarRutas = async () => {
     const { data } = await obtenerRutas();
     if (data) setRutas(data as Ruta[]);
+  };
+
+  const agregarHorario = () => {
+    if (nuevaHora && !form.horarios.includes(nuevaHora)) {
+      const horariosActualizados = [...form.horarios, nuevaHora].sort();
+      setForm({ ...form, horarios: horariosActualizados});
+      setNuevaHora('');
+    }
+  };
+
+  const quitarHorario = (horaAQuitar: string) => {
+    setForm({ ...form, horarios: form.horarios.filter(h => h !== horaAQuitar)});
   };
 
   const manejarGuardar = async () => {
@@ -73,6 +87,7 @@ const AdminRutas: React.FC = () => {
       destino: form.destino,
       precio: parseFloat(form.precio),
       duracion: form.duracion ? form.duracion : undefined,
+      horarios: form.horarios,
       fecha_salida: form.fecha_salida 
     };
 
@@ -119,6 +134,7 @@ const AdminRutas: React.FC = () => {
         destino: ruta.destino,
         precio: ruta.precio.toString(),
         duracion: ruta.duracion || '',
+        horarios: ruta.horarios || [],
         fecha_salida: ruta.fecha_salida || new Date().toISOString() 
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -126,7 +142,7 @@ const AdminRutas: React.FC = () => {
 
   const limpiarFormulario = () => {
     setModoEdicion(null); 
-    setForm({ origen: '', destino: '', precio: '', duracion: '', fecha_salida: new Date().toISOString() });
+    setForm({ origen: '', destino: '', precio: '', duracion: '', horarios: [], fecha_salida: new Date().toISOString() });
   };
 
   const formatearFechaVisual = (fechaIso?: string) => {
@@ -215,6 +231,39 @@ const AdminRutas: React.FC = () => {
                       onIonChange={e => setForm({...form, duracion: (e.detail.value as string) || ''})} 
                   />
                 </IonItem>
+            </div>
+
+            <div style={{ background: '#f9f9f9', padding: '15px', borderRadius: '10px', marginTop: '15px', border: '1px solid #eee' }}>
+                <IonLabel style={{ fontWeight: 'bold', color: '#555', display: 'block', marginBottom: '10px' }}>
+                    Horarios de Salida
+                </IonLabel>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+                    <div style={{ flex: 1, background: 'white', borderRadius: '8px', border: '1px solid #ddd', padding: '0 10px' }}>
+                        <IonInput 
+                            type="time" 
+                            value={nuevaHora} 
+                            onIonChange={e => setNuevaHora((e.detail.value as string) || '')}
+                        />
+                    </div>
+                    <IonButton onClick={agregarHorario} disabled={!nuevaHora} style={{ '--border-radius': '8px' }}>
+                        <IonIcon icon={addOutline} slot="icon-only" />
+                    </IonButton>
+                </div>
+
+                {/* Mostrar las horas que se han agregado */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {form.horarios.length === 0 ? (
+                        <span style={{ fontSize: '13px', color: '#999' }}>No has agregado horarios</span>
+                    ) : (
+                        form.horarios.map(hora => (
+                            <IonChip key={hora} color="primary" style={{ margin: 0 }}>
+                                <IonLabel>{hora}</IonLabel>
+                                <IonIcon icon={closeCircleOutline} onClick={() => quitarHorario(hora)} />
+                            </IonChip>
+                        ))
+                    )}
+                </div>
             </div>
             
             <IonItem className="input-card" style={{'--background': 'white', margin: '10px 0', border:'1px solid #eee'}}>

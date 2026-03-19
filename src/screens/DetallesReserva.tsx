@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IonContent, IonPage, IonButton, IonIcon, IonButtons, IonCard, 
     IonCardContent, IonHeader, IonToolbar, IonBackButton, IonTitle,
 } from '@ionic/react';
-import { personCircleOutline, arrowForward, addOutline, removeOutline } from 'ionicons/icons';
+import { personCircleOutline, arrowForward, addOutline, removeOutline, timeOutline } from 'ionicons/icons';
 import { useLocation } from 'react-router-dom';
 import { Ruta } from '../models/types';
 
@@ -16,7 +16,7 @@ const DetallesReserva: React.FC = () => {
 
     const totalPasajeros = pasajeros.adultos + pasajeros.estudiantes + pasajeros.mayores + pasajeros.niños;
     const precioTotal =  totalPasajeros * ruta.precio;
-    
+    const horariosDisponibles = ruta.horarios || [];
     const actualizarPasajero = (tipo: keyof typeof pasajeros, operacion: 'sumar' | 'restar') => {
         setPasajeros(prev => {
             const actual = prev[tipo];
@@ -28,6 +28,12 @@ const DetallesReserva: React.FC = () => {
                 [tipo]: operacion === 'sumar' ? actual + 1 : actual - 1
             };
         });
+    };
+
+    const actualizarHorario = () => {
+      if (!horarioSeleccionado) return;
+      console.log("Avanzando con reserva:", { ruta, pasajeros, horarioSeleccionado});
+      //history.push('/selecion-asientos', {...});
     };
 
     return ( 
@@ -51,7 +57,11 @@ const DetallesReserva: React.FC = () => {
         
         <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#f4f5f8', padding: '15px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h1 style={{ margin: 0, fontFamily: 'serif', fontSize: '24px' }}>Detalles de Viaje</h1>
-            <IonButton color="primary" style={{ '--border-radius': '8px', fontWeight: 'bold' }}>
+            <IonButton 
+            color="primary"
+            disabled={!horarioSeleccionado}
+            onClick={actualizarHorario}  
+            style={{ '--border-radius': '8px', fontWeight: 'bold' }}>
                 Continuar
             </IonButton>
         </div>
@@ -68,7 +78,7 @@ const DetallesReserva: React.FC = () => {
               {/* Detalles (Horario, Pasajeros, Asientos) */}
               <div style={{ color: '#555', fontSize: '14px', lineHeight: '1.6' }}>
                 <p style={{ margin: '0 0 10px 0', fontWeight: 'bold' }}>
-                    Horario | {ruta.fecha_salida ? new Date(ruta.fecha_salida).toLocaleDateString() : 'Sin fecha'} | {horarioSeleccionado || '---'}
+                    Horario | {ruta.fecha_salida ? new Date(ruta.fecha_salida).toLocaleDateString() : 'Sin fecha'} | Hora: <span style={{color: horarioSeleccionado ? '#0f7e80' : '#ff4d4d'}}>{horarioSeleccionado || 'Seleccione abajo'}</span>|
                 </p>
                 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -146,11 +156,44 @@ const DetallesReserva: React.FC = () => {
                 </div>
             </div>
 
-            {/* Aquí irán los Horarios en el siguiente paso */}
-            <h2 style={{ fontSize: '18px', color: '#555', borderBottom: '2px solid #ddd', paddingBottom: '10px' }}>Selección de Horario</h2>
-            <div style={{ background: '#eef2f5', height: '150px', borderRadius: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#999' }}>
-                Próximamente: Lista de Horarios
+            {/* SELECCIÓN DE HORARIO */}
+            <h2 style={{ fontSize: '18px', color: '#555', borderBottom: '2px solid #ddd', paddingBottom: '10px', marginTop: 0 }}>
+                 Selección de Horario
+            </h2>
+            {horariosDisponibles.length === 0 ? (
+                <div style={{ background: '#fff3cd', color: '#856404', padding: '15px', borderRadius: '10px', textAlign: 'center', marginBottom: '30px', border: '1px solid #ffeeba' }}>
+                    <IonIcon icon={timeOutline} style={{ fontSize: '24px', marginBottom: '5px' }} /><br/>
+                    Esta ruta aún no tiene horarios de salida asignados.
+                </div>
+            ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))', gap: '10px', marginBottom: '30px' }}>
+                {horariosDisponibles.map((hora, index) => {
+                    const seleccionado = horarioSeleccionado === hora;
+                    return (
+                        <div 
+                            key={index}
+                            onClick={() => setHorarioSeleccionado(hora)}
+                            style={{
+                                background: seleccionado ? 'var(--ion-color-primary)' : 'white',
+                                color: seleccionado ? 'white' : '#555',
+                                border: seleccionado ? '2px solid var(--ion-color-primary)' : '1px solid #ddd',
+                                borderRadius: '10px',
+                                padding: '12px 0',
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                                fontSize: '16px',
+                                cursor: 'pointer',
+                                boxShadow: seleccionado ? '0 4px 8px rgba(15, 126, 128, 0.3)' : '0 2px 4px rgba(0,0,0,0.05)',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            <IonIcon icon={timeOutline} style={{ display: 'block', margin: '0 auto 5px auto', fontSize: '20px' }} />
+                            {hora}
+                        </div>
+                    );
+                })}
             </div>
+            )}
 
         </div>
 
