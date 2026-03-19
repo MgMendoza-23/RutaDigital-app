@@ -5,8 +5,8 @@ import {
 } from '@ionic/react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { personCircleOutline } from 'ionicons/icons';
-import '../CSS/SeleccionAsientos.css';
-import { MochilaReserva } from '../models/types';
+import '../css/SeleccionAsientos.css';
+import { ReservaPayload } from '../models/types';
 
 // Ícono SVG de un volante para el chofer
 const VolanteIcon = () => (
@@ -16,17 +16,14 @@ const VolanteIcon = () => (
 );
 
 const SeleccionAsientos: React.FC = () => {
-    const location = useLocation<MochilaReserva>();
+    const location = useLocation<ReservaPayload>();
     const history = useHistory();
     
-    // Recibimos la "mochila" de datos de la pantalla anterior
     const { ruta, horarioSeleccionado, precioTotal, totalPasajeros } = location.state || {};
 
     const [asientosSeleccionados, setAsientosSeleccionados] = useState<string[]>([]);
     const [mensajeToast, setMensajeToast] = useState('');
 
-    // 🛑 SIMULACIÓN: Estos asientos ya fueron comprados por otros usuarios
-    // Más adelante los traeremos consultando a Supabase
     const asientosOcupados = ['1A', '1B', '4C', '4D', '7A']; 
 
     // Generador de la cuadrícula del autobús (10 filas, 4 columnas)

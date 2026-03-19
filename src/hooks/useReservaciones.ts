@@ -1,7 +1,7 @@
 // src/hooks/userReservaciones.ts
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../API/supabase';
-import { obtenerMisReservas, cancelarReserva } from '../services/Functions.Reservas';
+import { obtenerMisReservas, cancelarReserva } from '../services/reservasService';
 import { Reserva, Ruta } from '../models/types';
 
 type ReservaConRuta = Reserva & { rutas?: Ruta };

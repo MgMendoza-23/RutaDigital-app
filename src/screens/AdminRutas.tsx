@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   IonContent, IonPage, IonInput, IonButton, IonIcon, IonList, IonItem, IonLabel,
-  IonToast, IonDatetime, IonDatetimeButton, IonModal, IonButtons, IonMenuButton, 
+  IonToast, IonDatetime, IonModal, IonButtons, IonMenuButton, 
   IonHeader, IonToolbar, IonTitle, IonSelect, IonSelectOption, IonChip
 } from '@ionic/react';
 import { trash, createOutline, calendarOutline, timeOutline, addOutline, closeCircleOutline } from 'ionicons/icons';
+import '../css/variables.css';
 
-// importamos archivo css
-import '../CSS/variables.css';
-
-/*
-Funciones en Archivo Functions.Admin.ts
-
--> Crear ruta
--> Obtener rutas
--> Eliminar ruta
--> Actualizar ruta
-
-
-*/
 const CIUDADES_DISPONIBLES = [
   "Palenque, Chiapas",
   "Tenosique, Tabasco",
@@ -30,10 +18,9 @@ const CIUDADES_DISPONIBLES = [
 ];
 
 
-
 // obteniendo el modelo de datos de las rutas
 import { Ruta } from "../models/types";
-import { crearRuta, obtenerRutas, eliminarRuta, actualizarRuta } from '../services/Functions.Admin';
+import { crearRuta, obtenerRutas, eliminarRuta, actualizarRuta } from '../services/adminService';
 
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -146,12 +133,12 @@ const AdminRutas: React.FC = () => {
   };
 
   const formatearFechaVisual = (fechaIso?: string) => {
-    if (!fechaIso) return "Sin fecha";
+    if (!fechaIso) return "Selecciona una fecha";
     try {
-        const parsedDate = parseISO(fechaIso);
+        const d = parseISO(fechaIso);
         // Validamos que la fecha no esté corrupta
-        if (isNaN(parsedDate.getTime())) return "Fecha inválida";
-        return format(parsedDate, "dd - MMM - yyyy", { locale: es });
+        if (isNaN(d.getTime())) return "Fecha inválida";
+        return format(d, "EEEE, d 'de' MMMM yyyy", { locale: es });
     } catch {
         return "Fecha inválida";
     }
@@ -226,9 +213,10 @@ const AdminRutas: React.FC = () => {
                   <IonIcon icon={timeOutline} slot="start" style={{marginTop: '25px'}} color="medium"/>
                   <IonLabel position="stacked">Duración</IonLabel>
                   <IonInput 
-                      type="time"
+                      type="text"
                       value={form.duracion} 
                       onIonChange={e => setForm({...form, duracion: (e.detail.value as string) || ''})} 
+                      placeholder="Ej. 2h 30m, 4 horas..."
                   />
                 </IonItem>
             </div>
@@ -266,21 +254,51 @@ const AdminRutas: React.FC = () => {
                 </div>
             </div>
             
-            <IonItem className="input-card" style={{'--background': 'white', margin: '10px 0', border:'1px solid #eee'}}>
-                <IonIcon icon={calendarOutline} slot="start" color="medium"/>
-                <IonLabel>Fecha de Salida</IonLabel>
-                <IonDatetimeButton datetime="datetime-salida"></IonDatetimeButton>
+            <IonItem 
+              id="abrir-calendario" 
+              button={true} 
+              detail={false} 
+              className="input-card" 
+              style={{'--background': 'white', margin: '10px 0', border:'1px solid #eee'}}
+          >
+              <IonIcon icon={calendarOutline} slot="start" color="medium"/>
+              
+              <IonLabel>
+                  <h3 style={{ fontSize: '12px', color: '#888', margin: 0 }}>Fecha de Salida</h3>
+                  {/* Aquí inyectamos nuestra fecha formateada elegante */}
+                  <p style={{ 
+                      fontWeight: 'bold', 
+                      color: '#333', 
+                      fontSize: '16px', 
+                      textTransform: 'capitalize',
+                      marginTop: '5px'
+                  }}>
+                      {formatearFechaVisual(form.fecha_salida)}
+                  </p>
+              </IonLabel>
+          </IonItem>
 
-                <IonModal keepContentsMounted={true}>
-                    <IonDatetime 
-                        id="datetime-salida" 
-                        presentation="date-time" 
-                        preferWheel={true} 
-                        value={form.fecha_salida}
-                        onIonChange={e => setForm({...form, fecha_salida: stringOrArrayToString(e.detail.value)})}
-                    ></IonDatetime>
-                </IonModal>
-            </IonItem>
+          {/* El modal ahora "escucha" los clics del IonItem gracias al trigger */}
+          <IonModal trigger="abrir-calendario" keepContentsMounted={true}
+            style={{
+                  '--height': 'auto',
+                  '--width': 'auto',
+                  '--border-radius': '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+              }}
+          >
+              <IonDatetime 
+                  presentation="date" 
+                  locale="es-ES"
+                  showDefaultButtons={true}
+                  doneText="Confirmar"
+                  cancelText="Cancelar"
+                  value={form.fecha_salida}
+                  onIonChange={e => setForm({...form, fecha_salida: stringOrArrayToString(e.detail.value)})}
+              ></IonDatetime>
+          </IonModal>
           </IonList>
           
           <div style={{display: 'flex', gap: '10px', marginTop: '20px'}}>

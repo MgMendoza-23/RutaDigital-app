@@ -8,23 +8,7 @@ import { personCircleOutline, arrowForward, timeOutline, bus } from 'ionicons/ic
 
 
 // importamos el archivo css
-import '../CSS/variables.css';
-
-
-/*
-Funciones en Archivo "../services/Functions.Users.ts"
-
--> Buscar rutas Usuario
--> Crear reserva
--> Obtener Mis Reservas
--> Obtener rol usuario al loguear
-
-
-Funciones en Archivo "..//API/supabase.ts"
-
--> supabase
-
-*/
+import '../css/variables.css';
 
 // obteniendo el modelo de datos de las rutas
 import { Ruta } from "../models/types";

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { buscarRutasUsuario } from '../services/Functions.Users';
+import { buscarRutasUsuario } from '../services/userService';
 import { Ruta } from '../models/types';
 import { useHistory } from 'react-router';
 

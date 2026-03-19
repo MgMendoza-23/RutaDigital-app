@@ -1,7 +1,7 @@
 import React from "react";
 import {IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle} from "@ionic/react";
 import { personCircleOutline } from "ionicons/icons";
-import { cerrarSesion } from "../services/Functions.Auth";
+import { cerrarSesion } from "../services/authService";
 import { useAuth } from "../Context/AuthContext";
 
 const Sidebar: React.FC = () => {

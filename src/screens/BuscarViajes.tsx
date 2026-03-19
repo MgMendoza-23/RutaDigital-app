@@ -9,8 +9,8 @@ import {
 import { locationOutline, calendarOutline, personCircleOutline, arrowForward, timeOutline, bus } from 'ionicons/icons';
 
 // Importamos el archivo CSS y el nuevo Custom Hook
-import '../CSS/variables.css';
-import { useBuscarViajes } from '../hooks/userBuscarViajes';
+import '../css/variables.css';
+import { useBuscarViajes } from '../hooks/useBuscarViajes';
 
 const CIUDADES_DISPONIBLES = [
   "Palenque, Chiapas",

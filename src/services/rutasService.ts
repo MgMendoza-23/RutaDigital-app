@@ -18,11 +18,7 @@ export const buscarRutasUsuario = async (origen: string, destino: string, fecha:
     }
     
     if (fecha) {
-        const inicioDia = `${fecha}T00:00:00`;
-        const finDia = `${fecha}T23:59:59`;
-        query = query
-            .gte('fecha_salida', inicioDia)
-            .lte('fecha_salida', finDia);
+        query = query.eq('fecha_salida', fecha);
     }
     
     return await query.order('fecha_salida', { ascending: true });

@@ -5,7 +5,7 @@ import {
 } from '@ionic/react';
 import { personCircleOutline, timeOutline, pinOutline, bus } from 'ionicons/icons';
 
-import { obtenerMisReservas, cancelarReserva }  from '../services/Functions.Reservas';
+import { obtenerMisReservas, cancelarReserva }  from '../services/reservasService';
 import { AuthContext } from '../Context/AuthContext';
 import { Reserva } from '../models/types';
 

@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState, useRef } from "react";
 import { supabase } from "../API/supabase";
-import { obtenerRolUsuario } from "../services/Functions.Users";
+import { obtenerRolUsuario } from "../services/userService";
 
 import { User } from "@supabase/supabase-js";
 import { AuthContextType } from "../models/types";

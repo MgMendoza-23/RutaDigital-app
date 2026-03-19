@@ -49,7 +49,7 @@ export interface ProtectedRouteProps extends RouteProps {
     requiredRole?: 'admin' | 'usuario';
 }
 
-export interface MochilaReserva {
+export interface ReservaPayload {
     ruta: Ruta;
     pasajeros: Pasajeros; 
     horarioSeleccionado: string;

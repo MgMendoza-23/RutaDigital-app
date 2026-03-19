@@ -4,34 +4,9 @@ import { mailOutline, lockClosedOutline, logInOutline, personAddOutline, bus, pe
 import { useHistory } from 'react-router-dom';
 //importamos archivo css
 
-import "../CSS/Login.css";
+import "../css/Login.css";
 
-
-
-/*
-
-
-Funciones en Archivo Functions.Users.ts
-
--> Buscar rutas
--> Crear reserva
--> Obtener reservas del usuario
--> Obtener rol usuario al loguear
-
-
-Funciones en Archivo Functions.Auth.ts
-
--> Registrar usuario
--> Iniciar Sesion
--> Cerrar Sesion
-
-
-*/
-
-import { registrarUsuario, iniciarSesion } from '../services/Functions.Auth';
-
-
-
+import { registrarUsuario, iniciarSesion } from '../services/authService';
 
 
 const Login: React.FC = () => {
@@ -96,9 +71,9 @@ const Login: React.FC = () => {
                
                 <IonItem lines="none" className="custom-input">
                     <IonIcon icon={mailOutline} slot="start" color="medium" />
-                    <IonLabel position="floating" color="medium">Email</IonLabel>
                     <IonInput 
                         type="email" 
+                        placeholder="Correo electrónico"
                         value={email} 
                         onIonChange={e => setEmail(e.detail.value!)} 
                     />
@@ -107,9 +82,9 @@ const Login: React.FC = () => {
                 
                 <IonItem lines="none" className="custom-input">
                     <IonIcon icon={lockClosedOutline} slot="start" color="medium" />
-                    <IonLabel position="floating" color="medium">Contraseña</IonLabel>
                     <IonInput 
                         type="password" 
+                        placeholder="Contraseña"
                         value={password} 
                         onIonChange={e => setPassword(e.detail.value!)} 
                     />
@@ -120,9 +95,9 @@ const Login: React.FC = () => {
                         
                         <IonItem lines="none" className="custom-input">
                             <IonIcon icon={personOutline} slot="start" color="medium" />
-                            <IonLabel position="floating" color="medium">Nombre Completo</IonLabel>
                             <IonInput 
                                 type="text" 
+                                placeholder="Nombre Completo"
                                 value={nombre} 
                                 onIonChange={e => setNombre(e.detail.value!)} 
                             />
@@ -131,9 +106,9 @@ const Login: React.FC = () => {
                         
                         <IonItem lines="none" className="custom-input">
                             <IonIcon icon={callOutline} slot="start" color="medium" />
-                            <IonLabel position="floating" color="medium">Teléfono Móvil</IonLabel>
                             <IonInput 
                                 type="tel" 
+                                placeholder="Teléfono Móvil"
                                 value={telefono} 
                                 onIonChange={e => setTelefono(e.detail.value!)} 
                             />
