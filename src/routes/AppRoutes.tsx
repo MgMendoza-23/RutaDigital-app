@@ -7,10 +7,11 @@ import BuscarViajes from "../screens/BuscarViajes";
 import AdminRutas from "../screens/AdminRutas";
 import TodasLasRutas from "../screens/TodasLasRutas";
 import DetallesReserva from "../screens/DetallesReserva";
-
+import SeleccionAsientos from "../screens/SeleccionAsientos";
+import Reservaciones from "../screens/Reservaciones";
 import ProtectedRoute from "../routes/ProtectedRoute";
 import { useAuth } from "../Context/AuthContext";
-import Reservaciones from "../screens/Reservaciones";
+
 
 const AppRoutes: React.FC = () => {
   const {user, role, loading } = useAuth();
@@ -38,6 +39,7 @@ const AppRoutes: React.FC = () => {
           <ProtectedRoute exact path="/todas-las-rutas" component={TodasLasRutas} requiredRole="usuario" />
           <ProtectedRoute exact path="/detalles-reserva" component={DetallesReserva} requiredRole="usuario" />
           <ProtectedRoute exact path="/admin-rutas" component={AdminRutas} requiredRole="admin"/>
+          <ProtectedRoute exact path="/seleccion-asientos" component={SeleccionAsientos} requiredRole="usuario" />
           <ProtectedRoute exact path="/reservaciones" component={Reservaciones} requiredRole="usuario"/>
 
           <Route exact path="/">

@@ -21,10 +21,21 @@ export interface Reserva {
     id?: number;
     usuario_id: string;
     ruta_id: number;
+    horario?: string;
+    asientos?: string[];
+    pasajeros?: Pasajeros;
+    total_pago?: number;
     cantidad?: number;
     estado?: EstadoReserva;
     created_at?: string;
     rutas?: Ruta;
+}
+
+export interface Pasajeros {
+    adultos: number;
+    estudiantes: number;
+    mayores: number;
+    niños: number;
 }
 
 export interface AuthContextType {
@@ -36,6 +47,14 @@ export interface AuthContextType {
 export interface ProtectedRouteProps extends RouteProps {
     component: React.ComponentType;
     requiredRole?: 'admin' | 'usuario';
+}
+
+export interface MochilaReserva {
+    ruta: Ruta;
+    pasajeros: Pasajeros; 
+    horarioSeleccionado: string;
+    precioTotal: number;
+    totalPasajeros: number;
 }
 
 

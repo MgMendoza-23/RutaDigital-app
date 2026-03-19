@@ -3,11 +3,12 @@ import { IonContent, IonPage, IonButton, IonIcon, IonButtons, IonCard,
     IonCardContent, IonHeader, IonToolbar, IonBackButton, IonTitle,
 } from '@ionic/react';
 import { personCircleOutline, arrowForward, addOutline, removeOutline, timeOutline } from 'ionicons/icons';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Ruta } from '../models/types';
 
 const DetallesReserva: React.FC = () => {
     const location = useLocation<{ ruta: Ruta }>();
+    const history = useHistory();
     const ruta = location.state?.ruta || { origen: 'Origen', destino: 'Destino', precio: 0, fecha_salida: ''};
 
     const [pasajeros, setPasajeros] = useState({ adultos: 1, estudiantes: 0, mayores: 0, niños: 0 });
@@ -33,7 +34,17 @@ const DetallesReserva: React.FC = () => {
     const actualizarHorario = () => {
       if (!horarioSeleccionado) return;
       console.log("Avanzando con reserva:", { ruta, pasajeros, horarioSeleccionado});
-      //history.push('/selecion-asientos', {...});
+      history.push({
+        pathname: '/seleccion-asientos',
+        state: {
+          ruta,
+          pasajeros,
+          horarioSeleccionado,
+          precioTotal,
+          totalPasajeros
+        }
+
+      });
     };
 
     return ( 

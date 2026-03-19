@@ -1,17 +1,52 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
   IonPage, IonContent, IonButtons, IonMenuButton, IonIcon,
-  IonText, IonCard, IonCardContent, IonButton, IonSpinner, IonToast
+  IonText, IonCard, IonCardContent, IonButton, IonSpinner, IonToast, useIonViewWillEnter
 } from '@ionic/react';
-import { personCircleOutline, timeOutline, pinOutline, bus, closeCircleOutline } from 'ionicons/icons';
-import { useUserReservaciones } from '../hooks/userReservaciones';
+import { personCircleOutline, timeOutline, pinOutline, bus } from 'ionicons/icons';
+
+import { obtenerMisReservas, cancelarReserva }  from '../services/Functions.Reservas';
+import { AuthContext } from '../Context/AuthContext';
+import { Reserva } from '../models/types';
+
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 const Reservaciones: React.FC = () => {
-  const {
-    reservas, cargando, mensaje, mostrarToast, setMostrarToast, cancelar
-  } = useUserReservaciones();
+  const { user } = useContext(AuthContext);
+
+  const [reservas, setReservas] = useState<Reserva[]>([]);
+  const [cargando, setCargando] = useState(true);
+  const [mensaje, setMensaje] = useState('');
+  const [mostrarToast, setMostrarToast] = useState(false);
+  
+  const cargarMisViajes = async () => {
+    if (!user) return; 
+
+    setCargando(true);
+    const { data } = await obtenerMisReservas(user.id);
+    if (data) setReservas(data as unknown as Reserva[]);
+    setCargando(false);
+  };
+
+  useIonViewWillEnter(() => {
+    cargarMisViajes();
+  });
+
+  // 👇 Esta es la función clave que faltaba para procesar las cancelaciones
+  const manejarCancelacion = async (reservaId: number) => {
+    if (!user) return;
+    
+    const { error } = await cancelarReserva(reservaId, user.id);
+    
+    if (error) {
+        setMensaje("Error al cancelar la reserva.");
+    } else {
+        setMensaje("Reservación cancelada con éxito.");
+        cargarMisViajes(); // Recargamos para que se pinte en rojo
+    }
+    setMostrarToast(true);
+  };
 
   const formatearFecha = (iso?: string) => {
     if (!iso) return '—';
@@ -60,71 +95,59 @@ const Reservaciones: React.FC = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 'bold', color: '#333' }}>
                 <span>
                   <IonIcon icon={pinOutline} style={{ verticalAlign: 'middle' }} />
-                  
-                  <span>{res.rutas?.origen} → {res.rutas?.destino}</span>
-
+                  <span> {res.rutas?.origen} → {res.rutas?.destino}</span>
                 </span>
-                <span style={{ color: 'var(--ion-color-primary)' }}>${res.rutas?.precio}</span>
+                {/* Mostramos el pago total guardado, o el precio base como respaldo */}
+                <span style={{ color: 'var(--ion-color-primary)' }}>${res.total_pago || res.rutas?.precio}</span>
               </div>
 
               <div style={{ display: 'flex', gap: '15px', marginTop: '10px', color: '#666' }}>
-                <span><IonIcon icon={timeOutline} style={{ verticalAlign: 'middle' }} /> {res.rutas?.duracion || '—'}</span>
-                <span><IonIcon icon={bus} style={{ verticalAlign: 'middle' }} /> Bus Ejecutivo</span>
+                {/* Mostramos el horario exacto y los asientos */}
+                <span><IonIcon icon={timeOutline} style={{ verticalAlign: 'middle' }} /> {res.horario || '—'}</span>
+                <span><IonIcon icon={bus} style={{ verticalAlign: 'middle' }} /> Asientos: {res.asientos?.join(', ') || 'N/A'}</span>
               </div>
 
               <div style={{ marginTop: '8px', color: '#555' }}>
                 Salida: <strong>{formatearFecha(res.rutas?.fecha_salida)}</strong>
               </div>
 
-              <div style={{ marginTop: '10px', display: 'flex', gap: '10px' }}>
+              <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {res.estado === 'cancelado' ? (
                   <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginTop: 8,
-                    padding: '4px 10px',
-                    borderRadius: 12,
-                    background: '#ffe6e6',
-                    color: '#c0392b',
-                    fontSize: 12,
-                    fontWeight: 'bold'
+                    display: 'flex', alignItems: 'center', padding: '4px 10px',
+                    borderRadius: 12, background: '#ffe6e6', color: '#c0392b',
+                    fontSize: 12, fontWeight: 'bold', width: 'fit-content'
                   }}>
                     Cancelada
                   </div>
                 ) : (
                   <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginTop: 8,
-                    padding: '4px 10px',
-                    borderRadius: 12,
-                    background: '#e6f7f5',
-                    color: '#1ba098',
-                    fontSize: 12,
-                    fontWeight: 'bold'
+                    display: 'flex', alignItems: 'center', padding: '4px 10px',
+                    borderRadius: 12, background: '#e6f7f5', color: '#1ba098',
+                    fontSize: 12, fontWeight: 'bold', width: 'fit-content'
                   }}>
                     Confirmada
                   </div>
                 )}
 
-                <div style={{ marginTop: '10px', display: 'flex', gap: '10px' }}>
+                <div style={{ display: 'flex', width: '100%' }}>
                   {res.estado !== 'cancelado' ? (
                     <IonButton
                       expand="block"
                       color="medium"
                       fill="outline"
-                      onClick={() => cancelar && cancelar(res.id!)}
-                      style={{ '--border-radius': '8px' }}
+                      onClick={() => manejarCancelacion(res.id!)}
+                      style={{ '--border-radius': '8px', width: '100%', margin: 0 }}
                     >
                       Cancelar
                     </IonButton>
                   ) : (
-                    <IonButton expand="block" disabled color="medium" fill="outline" style={{ '--border-radius': '8px' }}>
+                    <IonButton expand="block" disabled color="medium" fill="outline" style={{ '--border-radius': '8px', width: '100%', margin: 0 }}>
                       Reservación cancelada
                     </IonButton>
                   )}
                 </div>
-                </div>
+              </div>
             </IonCardContent>
           </IonCard>
         ))}

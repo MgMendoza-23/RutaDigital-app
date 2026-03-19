@@ -4,8 +4,6 @@ import { supabase } from "../API/supabase";
 Funciones en Archivo Functions.Users.ts
 
 -> Buscar rutas Usuario
--> Crear reserva
--> Obtener Mis Reservas
 -> Obtener rol usuario al loguear
 
 
@@ -33,53 +31,6 @@ export const buscarRutasUsuario = async (origen: string, destino: string, fecha:
     }
     return await query.order('fecha_salida', {ascending:true})
 };
-
-// Crear reserva
-export const crearReserva = async (rutaId: number, usuarioId: string) => {
-    return await supabase.from('reservas').insert([
-    {
-        ruta_id: rutaId,
-        usuario_id: usuarioId,
-        estado: 'confirmado'
-    }
-    ]);
-};
-
-// Obtener Mis Reservas
-export const obtenerMisReservas = async (usuarioId: string) => {
-    return await supabase
-    .from('reservas')
-    
-    .select(`
-      id,
-      created_at,
-      usuario_id,
-      ruta_id,
-      cantidad,
-      estado,
-      rutas:rutas (
-        id,
-        origen,
-        destino,
-        precio,
-        duracion,
-        fecha_salida
-      )
-    `)
-    .eq('usuario_id', usuarioId)
-    .order('created_at', { ascending: false });
-};
-
-
-export const cancelarReserva = async (reservaId: number, usuarioId: string) => {
-  return await supabase
-    .from('reservas')
-    .update({ estado: 'cancelado' })
-    .match({ id: Number(reservaId), usuario_id: usuarioId })
-    .select('id, estado')  // pedimos la fila confirmada
-    .maybeSingle();
-};
-
 
 // Obtener rol Usuario
 export const obtenerRolUsuario = async (userId: string): Promise<string> => {

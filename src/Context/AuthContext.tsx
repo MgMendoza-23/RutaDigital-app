@@ -5,7 +5,7 @@ import { obtenerRolUsuario } from "../services/Functions.Users";
 import { User } from "@supabase/supabase-js";
 import { AuthContextType } from "../models/types";
 
-const AuthContext = createContext<AuthContextType>({ user: null, role: null, loading: true });
+ export const AuthContext = createContext<AuthContextType>({ user: null, role: null, loading: true });
 
 export const AuthProvider: React.FC <{children: React.ReactNode}> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);

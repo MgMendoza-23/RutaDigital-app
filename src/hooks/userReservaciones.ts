@@ -1,7 +1,7 @@
 // src/hooks/userReservaciones.ts
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../API/supabase';
-import { obtenerMisReservas } from '../services/Functions.Users';
+import { obtenerMisReservas, cancelarReserva } from '../services/Functions.Reservas';
 import { Reserva, Ruta } from '../models/types';
 
 type ReservaConRuta = Reserva & { rutas?: Ruta };
@@ -31,15 +31,15 @@ const cargar = useCallback(async () => {
       return;
     }
 
-    setReservas((data as ReservaConRuta[]) || []);
-  } catch (e: any) {
-    if (e?.name === 'AbortError') {
-      console.warn('Carga de reservas abortada (ignorada)');
-      return;
-    }
-    console.error(e);
-    setMensaje('Error inesperado cargando reservaciones');
-    setMostrarToast(true);
+    setReservas((data as unknown as ReservaConRuta[]) || []);
+  } catch (e: unknown) {
+    if ((e as Error)?.name === 'AbortError') {
+    console.warn('Carga de reservas abortada (ignorada)');
+    return;
+  }
+  console.error(e);
+  setMensaje('Error inesperado cargando reservaciones');
+  setMostrarToast(true);
   } finally {
     setCargando(false);
   }
@@ -55,12 +55,7 @@ const cargar = useCallback(async () => {
         return;
       }
 
-      const { data, error } = await supabase
-        .from('reservas')
-        .update({ estado: 'cancelado' })
-        .match({ id: Number(reservaId), usuario_id: user.id })
-        .select('id, estado')
-        .maybeSingle();
+      const { data, error } = await cancelarReserva(reservaId, user.id);
 
       if (error) {
         setMensaje(`Error al cancelar: ${error.message}`);
@@ -93,4 +88,3 @@ const cargar = useCallback(async () => {
     cancelar,
   };
 };
-``
