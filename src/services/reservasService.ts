@@ -3,8 +3,9 @@ import { Pasajeros } from "../models/types";
 
 /* Funciones en el archivo Functions.Reservas.ts 
     -> Crear las reservas
-    -> Obtiene mis reservas
-    -> Cancela algua reserva
+    -> Obtención de mis reservas
+    -> Cancelación de reserva
+    -> Obtención de asientos ocupados
 */
 
 // Crear reserva
@@ -68,4 +69,38 @@ export const cancelarReserva = async (reservaId: number, usuarioId: string) => {
     .match({ id: Number(reservaId), usuario_id: usuarioId })
     .select('id, estado')
     .maybeSingle();
+};
+
+// Obtener asientos ocupados
+export const obtenerAsientosOcupados = async (rutaId: number, horario: string) => {
+    try {
+        const { data, error } = await supabase
+            .from('reservas')
+            .select('asientos')
+            .eq('ruta_id', rutaId)
+            .eq('horario', horario)
+            .eq('estado', 'confirmado');
+
+        if (error) {
+            console.error("Error de Supabase:", error);
+            return { data: [], error };
+        }
+
+        // Si data es null o está vacío, retornamos arreglo vacío de inmediato
+        if (!data || data.length === 0) {
+            return { data: [], error: null };
+        }
+
+        const asientos = data.flatMap(reserva => {
+            const as = reserva.asientos;
+            if (!as) return []; // Protección extra
+            if (Array.isArray(as)) return as;
+            return String(as).replace(/[{}[\]"]/g, '').split(',').map(s => s.trim());
+        });
+
+        return { data: asientos, error: null };
+    } catch (err) {
+        console.error("Error fatal procesando asientos:", err);
+        return { data: [], error: err };
+    }
 };

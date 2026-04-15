@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { 
     IonContent, IonPage, IonHeader, IonToolbar, IonButtons, 
-    IonBackButton, IonTitle, IonButton, IonIcon, IonToast 
+    IonBackButton, IonTitle, IonButton, IonIcon, IonToast, IonLoading 
 } from '@ionic/react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { personCircleOutline } from 'ionicons/icons';
 import '../css/SeleccionAsientos.css';
+import { obtenerAsientosOcupados } from '../services/reservasService';
 import { ReservaPayload } from '../models/types';
 
 // Ícono SVG de un volante para el chofer
@@ -18,13 +19,28 @@ const VolanteIcon = () => (
 const SeleccionAsientos: React.FC = () => {
     const location = useLocation<ReservaPayload>();
     const history = useHistory();
-    
     const { ruta, horarioSeleccionado, precioTotal, totalPasajeros } = location.state || {};
 
+    const [asientosOcupados, setAsientosOcupados] = useState<string[]>([]);
     const [asientosSeleccionados, setAsientosSeleccionados] = useState<string[]>([]);
+    const [cargando, setCargando] = useState(true);
     const [mensajeToast, setMensajeToast] = useState('');
 
-    const asientosOcupados = ['1A', '1B', '4C', '4D', '7A']; 
+    useEffect(() => {
+        const cargarAsientos = async () => {
+            try {
+                if (ruta?.id && horarioSeleccionado) {
+                    const { data } = await obtenerAsientosOcupados(ruta.id, horarioSeleccionado);
+                    setAsientosOcupados(data);
+                }
+            } catch (error) {
+                console.error("Error al cargar asientos:", error);
+            } finally {
+                setCargando(false);
+            }
+        };
+        cargarAsientos();
+    }, [ruta, horarioSeleccionado]);
 
     // Generador de la cuadrícula del autobús (10 filas, 4 columnas)
     const filas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -56,7 +72,7 @@ const SeleccionAsientos: React.FC = () => {
         console.log("Asientos apartados:", asientosSeleccionados);
         // Aquí lo mandaremos a la pantalla final de pago
         history.push({
-            pathname: '/datos-del-contacto',
+            pathname: '/datos-contacto',
             state: {
                 ...location.state,
                 asientosSeleccionados: asientosSeleccionados,
@@ -81,6 +97,8 @@ const SeleccionAsientos: React.FC = () => {
             </IonHeader>
 
             <IonContent style={{ '--background': '#f4f5f8' }} className="ion-padding">
+
+                <IonLoading isOpen={cargando} message="Verificando asientos disponibles..." spinner='crescent' />
                 
                 {/* Indicador de progreso de selección */}
                 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
