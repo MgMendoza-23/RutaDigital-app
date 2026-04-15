@@ -5,6 +5,7 @@ Funciones en Archivo Functions.Users.ts
 
 -> Buscar rutas Usuario
 -> Obtener rol usuario al loguear
+-> Actualizar perfil usuario
 
 
 */
@@ -68,3 +69,13 @@ return 'usuario';
 
 };
 
+// Actualizar perfil usuario
+export const actualizarPerfilUsuario = async (nombre: string, telefono: string) => {
+    const { data, error } = await supabase.auth.updateUser({
+        data: {
+            full_name: nombre,
+            phone: telefono
+        }
+    });
+    return { data, error };
+}

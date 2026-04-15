@@ -70,15 +70,20 @@ const Sidebar: React.FC = () => {
 
         <div className="menu-footer">
           <IonMenuToggle autoHide={false}>
-            <IonItem button onClick={manejarCerrarSesion} className="menu-item logout-item">
+            <IonItem button onClick={manejarCerrarSesion} className="menu-item logout-item" lines="none" detail={false}>
               <IonLabel>Salir</IonLabel>
             </IonItem>
           </IonMenuToggle>
 
-          <div className="menu-profile">
-            <IonIcon icon={personCircleOutline} size="large" />
-            <span>{role === 'admin' ? 'Administrador': 'Perfil'}</span>
-          </div>
+          <IonMenuToggle autoHide={false}>
+          <IonItem routerLink="/perfil" className="menu-profile" lines="none" detail={false} style={{ '--background': 'transparent', cursor: 'pointer', marginTop: '10px' }}
+          >
+            <IonIcon icon={personCircleOutline} size="large" slot="start" />
+            <IonLabel style={{ fontWeight: 'bold' }}>
+              {role === 'admin' ? 'Administrador': 'Perfil'}
+            </IonLabel>
+          </IonItem>
+        </IonMenuToggle>
         </div>
 
       </IonContent>

@@ -13,6 +13,7 @@ import ProtectedRoute from "../routes/ProtectedRoute";
 import DatosContactoReserva from "../screens/DatosContactoReserva";
 import BoletoDigital from "../screens/BoletoDigital";
 import AdminPasajeros from "../screens/AdminPasajeros";
+import Perfil from "../screens/Perfil";
 import { useAuth } from "../Context/AuthContext";
 
 
@@ -47,6 +48,7 @@ const AppRoutes: React.FC = () => {
           <ProtectedRoute exact path="/datos-del-contacto" component={DatosContactoReserva} requiredRole="usuario"/>
           <ProtectedRoute exact path="/boleto-digital" component={BoletoDigital} requiredRole="usuario"/>
           <ProtectedRoute exact path="/admin-pasajeros" component={AdminPasajeros} requiredRole="admin"/>
+          <ProtectedRoute exact path="/perfil" component={Perfil} />
 
           <Route exact path="/">
             <Redirect to="/login" />
