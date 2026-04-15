@@ -104,7 +104,7 @@ const Reservaciones: React.FC = () => {
               <div style={{ display: 'flex', gap: '15px', marginTop: '10px', color: '#666' }}>
                 {/* Mostramos el horario exacto y los asientos */}
                 <span><IonIcon icon={timeOutline} style={{ verticalAlign: 'middle' }} /> {res.horario || '—'}</span>
-                <span><IonIcon icon={bus} style={{ verticalAlign: 'middle' }} /> Asientos: {res.asientos?.join(', ') || 'N/A'}</span>
+                <span><IonIcon icon={bus} style={{ verticalAlign: 'middle' }} /> Asientos: {Array.isArray(res.asientos) ? res.asientos.join(', ') : String(res.asientos || '').replace(/[{}[\]"]/g, '') || 'N/A'}</span>
               </div>
 
               <div style={{ marginTop: '8px', color: '#555' }}>

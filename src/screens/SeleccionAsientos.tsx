@@ -55,7 +55,13 @@ const SeleccionAsientos: React.FC = () => {
 
         console.log("Asientos apartados:", asientosSeleccionados);
         // Aquí lo mandaremos a la pantalla final de pago
-        // history.push('/confirmacion', { ...location.state, asientosSeleccionados });
+        history.push({
+            pathname: '/datos-del-contacto',
+            state: {
+                ...location.state,
+                asientosSeleccionados: asientosSeleccionados,
+            }
+        });
     };
 
     return (

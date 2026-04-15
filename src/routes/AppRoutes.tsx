@@ -10,6 +10,8 @@ import DetallesReserva from "../screens/DetallesReserva";
 import SeleccionAsientos from "../screens/SeleccionAsientos";
 import Reservaciones from "../screens/Reservaciones";
 import ProtectedRoute from "../routes/ProtectedRoute";
+import DatosContactoReserva from "../screens/DatosContactoReserva";
+import BoletoDigital from "../screens/BoletoDigital";
 import { useAuth } from "../Context/AuthContext";
 
 
@@ -41,6 +43,8 @@ const AppRoutes: React.FC = () => {
           <ProtectedRoute exact path="/admin-rutas" component={AdminRutas} requiredRole="admin"/>
           <ProtectedRoute exact path="/seleccion-asientos" component={SeleccionAsientos} requiredRole="usuario" />
           <ProtectedRoute exact path="/reservaciones" component={Reservaciones} requiredRole="usuario"/>
+          <ProtectedRoute exact path="/datos-del-contacto" component={DatosContactoReserva} requiredRole="usuario"/>
+          <ProtectedRoute exact path="/boleto-digital" component={BoletoDigital} requiredRole="usuario"/>
 
           <Route exact path="/">
             <Redirect to="/login" />

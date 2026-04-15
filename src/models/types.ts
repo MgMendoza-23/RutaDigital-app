@@ -28,6 +28,8 @@ export interface Reserva {
     cantidad?: number;
     estado?: EstadoReserva;
     created_at?: string;
+    nombre_responsable?: string;
+    telefono_responsable?: string;
     rutas?: Ruta;
 }
 
@@ -55,6 +57,7 @@ export interface ReservaPayload {
     horarioSeleccionado: string;
     precioTotal: number;
     totalPasajeros: number;
+    asientosSeleccionados: string[];
 }
 
 

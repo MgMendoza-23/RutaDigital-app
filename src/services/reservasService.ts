@@ -14,7 +14,9 @@ export const crearReserva = async (
     horario: string,
     asientos: string[],
     pasajeros: Pasajeros,
-    totalPago: number
+    totalPago: number,
+    nombreResponsable: string,
+    telefonoResponsable: string
 ) => {
     return await supabase.from('reservas').insert([
         {
@@ -24,9 +26,13 @@ export const crearReserva = async (
             asientos: asientos,
             pasajeros: pasajeros,
             total_pago: totalPago,
-            estado: 'confirmado'
+            estado: 'confirmado',
+            nombre_responsable: nombreResponsable,
+            telefono_responsable: telefonoResponsable
         }
-    ]).select();
+    ])
+    .select('*, rutas(*)')
+    .single();
 };
 
 // Obtener mis reservas
