@@ -42,9 +42,15 @@ const Sidebar: React.FC = () => {
             </IonItem>
 
             {role === 'admin' && (
+              <>
               <IonItem routerLink="/admin-rutas" className="menu-item" detail={false}>
                 <IonLabel>Panel de Control</IonLabel>
               </IonItem>
+
+              <IonItem routerLink="/admin-pasajeros" className="menu-item" detail={false}>
+                <IonLabel>Lista de Pasajeros</IonLabel>
+              </IonItem>
+              </>
             )}
 
             {role === 'usuario' && (

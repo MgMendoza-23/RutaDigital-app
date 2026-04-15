@@ -8,6 +8,7 @@ Funciones en Archivo Functions.Admin.ts
 -> Obtener rutas 
 -> Eliminar ruta
 -> Actualizar ruta
+-> Obtener lista de pasajeros
 
 
 */
@@ -39,3 +40,14 @@ export const actualizarRuta = async (idRuta: string | number, nuevosDatos: Ruta)
     .eq('id', Number(idRuta))
     .select();
 };
+
+export const obtenerPasajeros = async (rutaId: number) => {
+    const { data, error } = await supabase
+    .from('reservas')
+    .select('*')
+    .eq('ruta_id', rutaId)
+    .eq('estado', 'confirmado')
+    .order('created_at', { ascending: true });
+
+    return { data, error };
+}
