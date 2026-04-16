@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import emailjs from '@emailjs/browser';
 import { 
-    IonContent, IonPage, IonButton, IonIcon, IonToast, IonLoading 
+    IonContent, IonPage, IonButton, IonToast, IonLoading 
 } from '@ionic/react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { checkmarkCircleOutline } from 'ionicons/icons';
-import { QRCodeSVG } from 'qrcode.react'; // 👈 El generador de QR
-import { Reserva } from '../models/types';
+import { QRCodeSVG } from 'qrcode.react'; 
+
 
 const BoletoDigital: React.FC = () => {
-    const location = useLocation<Reserva>();
+    const location = useLocation<any>();
     const history = useHistory();
-    const reserva = location.state;
+    const { reserva, correoResponsable } = location.state || {};
+    const boletoRef = useRef<HTMLDivElement>(null);
 
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [estadoCarga, setEstadoCarga] = useState({ activo: false, mensaje: '' });
@@ -20,7 +22,7 @@ const BoletoDigital: React.FC = () => {
         if (reserva) setMostrarConfirmacion(true);
     }, [reserva]);
 
-    const manejarAccion = (tipo: 'correo' | 'descarga') => {
+    const manejarAccion = async (tipo: 'correo' | 'descarga') => {
         setEstadoCarga({ 
             activo: true, 
             mensaje: tipo === 'correo' 
@@ -28,11 +30,51 @@ const BoletoDigital: React.FC = () => {
                 : 'Descargando boleto...' 
         });
 
-        // Se simula la operación y mandamos al home
-        setTimeout(() => {
+       try {
+            if (tipo === 'descarga') {
+                // LÓGICA DE DESCARGA LOCAL
+                if (boletoRef.current) {
+                    const canvas = await html2canvas(boletoRef.current, {
+                        scale: 2, // Escala 2 para que la imagen no salga borrosa
+                        useCORS: true,
+                        backgroundColor: '#ffffff'
+                    });
+                    const image = canvas.toDataURL("image/png");
+                    const link = document.createElement('a');
+                    link.download = `Boleto_RutaDigital_${reserva.id}.png`;
+                    link.href = image;
+                    link.click();
+                }
+            } else if (tipo === 'correo') {
+                // LÓGICA DE ENVÍO POR CORREO
+                const templateParams = {
+                    to_email: correoResponsable || 'correo_no_proporcionado@test.com',
+                    to_name: reserva.nombre_responsable,
+                    origen: reserva.rutas.origen,
+                    destino: reserva.rutas.destino,
+                    asientos: Array.isArray(reserva.asientos) ? reserva.asientos.join(', ') : String(reserva.asientos).replace(/[{}[\]"]/g, ''),
+                    fecha: new Date(reserva.rutas.fecha_salida).toLocaleDateString(),
+                    horario: reserva.horario,
+                    total: reserva.total_pago,
+                    id_reserva: reserva.id
+                };
+
+                // OJO: Deberás cambiar estos textos por tus credenciales de EmailJS
+                await emailjs.send(
+                    'TU_SERVICE_ID', 
+                    'TU_TEMPLATE_ID', 
+                    templateParams, 
+                    'TU_PUBLIC_KEY'
+                );
+            }
+        } catch (error) {
+            console.error("Error procesando el boleto:", error);
+            alert("Hubo un error al procesar tu solicitud. Intenta de nuevo.");
+        } finally {
+            // Ya sea que tenga éxito o falle, apagamos el loader y mandamos al home
             setEstadoCarga({ activo: false, mensaje: '' });
-            history.replace('/buscar-viajes'); // Termina el flujo
-        }, 2500);
+            history.replace('/buscar-viajes'); 
+        }
     };
 
     if (!reserva || !reserva.rutas) return <IonPage><IonContent>Error al cargar boleto.</IonContent></IonPage>;
@@ -46,7 +88,7 @@ const BoletoDigital: React.FC = () => {
                     <p style={{ color: '#666', fontSize: '14px', margin: 0 }}>Nosotros, Buen Viaje</p>
                 </div>
 
-                <div style={{ background: '#eef2f5', borderRadius: '15px', padding: '15px', border: '1px solid #d1d9e0', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+                <div ref={boletoRef} style={{ background: '#eef2f5', borderRadius: '15px', padding: '15px', border: '1px solid #d1d9e0', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
                     
                     <div style={{ background: 'white', padding: '10px', borderRadius: '20px', textAlign: 'center', fontWeight: 'bold', color: '#333', fontSize: '13px', marginBottom: '15px', border: '1px solid #ccc' }}>
                         {reserva.rutas.origen} ⟶ {reserva.rutas.destino}

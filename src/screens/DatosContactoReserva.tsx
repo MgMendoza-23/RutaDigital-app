@@ -17,6 +17,7 @@ const DatosContactoReserva: React.FC = () => {
     const [payload] = useState(location.state);
     const [nombre, setNombre] = useState('');
     const [telefono, setTelefono] = useState('');
+    const [correo, setCorreo] = useState('');
     const [procesando, setProcesando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     
@@ -25,6 +26,7 @@ const DatosContactoReserva: React.FC = () => {
         if (user && user.user_metadata) {
             setNombre(user.user_metadata.full_name || '');
             setTelefono(user.user_metadata.phone || '');
+            setCorreo(user.email || '');
         }
     }, [user]);
 
@@ -58,7 +60,10 @@ const DatosContactoReserva: React.FC = () => {
             // Ya con exíto mandamos la reserva completa al Boleto Digital
             history.push({
                 pathname: '/boleto-digital',
-                state: data 
+                state: {
+                    reserva: data,
+                    correoResponsable: correo
+                }
             });
         }
     };
@@ -128,6 +133,13 @@ const DatosContactoReserva: React.FC = () => {
                             placeholder="Número de Teléfono"
                             style={{ '--padding-start': '15px' }}
                         />
+                        <IonInput
+                            type="email"
+                            label="Correo para recibir el boleto"
+                            labelPlacement="floating"
+                            value={correo}
+                            onIonChange={e => setCorreo(e.detail.value!)}
+                            />
                     </div>
                 </div>
 

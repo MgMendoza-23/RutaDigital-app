@@ -9,6 +9,7 @@ Funciones en Archivo Functions.Admin.ts
 -> Eliminar ruta
 -> Actualizar ruta
 -> Obtener lista de pasajeros
+-> Buscar boleto QR
 
 
 */
@@ -41,6 +42,7 @@ export const actualizarRuta = async (idRuta: string | number, nuevosDatos: Ruta)
     .select();
 };
 
+// Obtener pasajeros con reservas
 export const obtenerPasajeros = async (rutaId: number) => {
     const { data, error } = await supabase
     .from('reservas')
@@ -51,3 +53,14 @@ export const obtenerPasajeros = async (rutaId: number) => {
 
     return { data, error };
 }
+
+// Buscar boleto QR
+export const buscarBoletoQR = async (reservaId: string) => {
+    const { data, error } = await supabase
+        .from('reservas')
+        .select('*')
+        .eq('id', reservaId)
+        .single();
+
+        return { data, error };
+};

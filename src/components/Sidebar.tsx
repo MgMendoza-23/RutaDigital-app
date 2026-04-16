@@ -50,6 +50,10 @@ const Sidebar: React.FC = () => {
               <IonItem routerLink="/admin-pasajeros" className="menu-item" detail={false}>
                 <IonLabel>Lista de Pasajeros</IonLabel>
               </IonItem>
+
+              <IonItem routerLink="/admin-escaner" className="menu-item" detail={false}>
+                <IonLabel>Escanear Boletos</IonLabel>
+              </IonItem>
               </>
             )}
 
