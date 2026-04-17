@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {
   IonContent, IonPage, IonInput, IonButton, IonIcon, IonList, IonItem, IonLabel,
   IonToast, IonDatetime, IonModal, IonButtons, IonMenuButton, 
-  IonHeader, IonToolbar, IonTitle, IonSelect, IonSelectOption, IonChip
+  IonSelect, IonSelectOption, IonChip
 } from '@ionic/react';
-import { trash, createOutline, calendarOutline, timeOutline, addOutline, closeCircleOutline } from 'ionicons/icons';
+import { trash, createOutline, calendarOutline, timeOutline, addOutline, closeCircleOutline, personCircleOutline } from 'ionicons/icons';
 import '../css/variables.css';
 
 const CIUDADES_DISPONIBLES = [
@@ -146,14 +146,18 @@ const AdminRutas: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonButtons slot="start">
-            <IonMenuButton />
+      <div className="curved-header-bg">
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center' }}>
+          <IonButtons>
+            <IonMenuButton color="light" />
           </IonButtons>
-          <IonTitle>Administrar Rutas</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+          <div className="header-title">
+            <h2>RutaDigital</h2>
+            <div className="header-subtitle">PANEL DE CONTROL</div>
+          </div>
+          <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
+        </div>
+      </div>
 
       <IonContent className="ion-padding" style={{'--background': '#f4f5f8'}}>
         

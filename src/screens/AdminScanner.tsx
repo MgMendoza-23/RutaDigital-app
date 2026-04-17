@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { 
-    IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, 
+    IonPage, IonButtons, IonMenuButton, 
     IonContent, IonCard, IonCardContent, IonButton, IonIcon, IonSpinner
 } from '@ionic/react';
-import { checkmarkCircleOutline, closeCircleOutline, scanOutline, refreshOutline } from 'ionicons/icons';
+import { checkmarkCircleOutline, closeCircleOutline, scanOutline, refreshOutline, personCircleOutline } from 'ionicons/icons';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { buscarBoletoQR } from '../services/adminService';
 import { Reserva } from '../models/types';
@@ -88,14 +88,18 @@ const AdminEscaner: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader className="ion-no-border">
-                <IonToolbar color="primary">
-                    <IonButtons slot="start">
-                        <IonMenuButton />
-                    </IonButtons>
-                    <IonTitle>Escanear Abordaje</IonTitle>
-                </IonToolbar>
-            </IonHeader>
+            <div className="curved-header-bg">
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center' }}>
+          <IonButtons>
+            <IonMenuButton color="light" />
+          </IonButtons>
+          <div className="header-title">
+            <h2>RutaDigital</h2>
+            <div className="header-subtitle">ESCANEAR ABORDAJE</div>
+          </div>
+          <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
+        </div>
+      </div>
 
             <IonContent className="ion-padding" style={{ '--background': '#f4f5f8' }}>
                 

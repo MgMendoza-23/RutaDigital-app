@@ -66,7 +66,7 @@ const BuscarViajes: React.FC = () => {
 
       <IonContent className="ion-padding" style={{ '--background': '#f4f5f8' }}>
         <IonText color="dark">
-          <h1 style={{ fontFamily: 'serif', marginTop: '10px', fontSize: '28px' }}>Reservación</h1>
+          <h1 style={{ fontFamily: 'serif', marginTop: '10px', fontSize: '30px', textAlign:'center' }}>Reservación</h1>
         </IonText>
 
         <div style={{ background: '#e0e0e0', borderRadius: '25px', padding: '4px', margin: '20px 0' }}>

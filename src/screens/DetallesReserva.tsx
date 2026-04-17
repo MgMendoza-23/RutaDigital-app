@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonContent, IonPage, IonButton, IonIcon, IonButtons, IonCard, 
-    IonCardContent, IonHeader, IonToolbar, IonBackButton, IonTitle,
+    IonCardContent, IonBackButton,
 } from '@ionic/react';
 import { personCircleOutline, arrowForward, addOutline, removeOutline, timeOutline } from 'ionicons/icons';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -49,25 +49,23 @@ const DetallesReserva: React.FC = () => {
 
     return ( 
         <IonPage>
-      <IonHeader className="ion-no-border">
-        <IonToolbar color="primary">
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/buscar-viajes" />
+          <div className="curved-header-bg">
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center' }}>
+          <IonButtons>
+            <IonBackButton defaultHref="/buscar-viajes" color="light" />
           </IonButtons>
-          <IonTitle>RutaDigital</IonTitle>
-          <IonButtons slot="end">
-            <IonIcon icon={personCircleOutline} style={{ fontSize: '30px', marginRight: '15px' }} />
-          </IonButtons>
-        </IonToolbar>
-        <div style={{ background: 'var(--ion-color-primary)', padding: '10px 20px', color: 'white' }}>
-           <h3 style={{ margin: 0, fontSize: '16px', letterSpacing: '1px', textTransform: 'uppercase' }}>Detalles de Viaje</h3>
+          <div className="header-title">
+            <h2>RutaDigital</h2>
+            <div className="header-subtitle">DETALLES DE VIAJE</div>
+          </div>
+          <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
         </div>
-      </IonHeader>
+      </div>
 
       <IonContent style={{ '--background': '#f4f5f8' }}>
         
         <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#f4f5f8', padding: '15px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h1 style={{ margin: 0, fontFamily: 'serif', fontSize: '24px' }}>Detalles de Viaje</h1>
+            <h1 style={{ margin: 0, fontFamily: 'serif', fontSize: '29px', textAlign:'center' }}>Detalles de Viaje</h1>
             <IonButton 
             color="primary"
             disabled={!horarioSeleccionado}
@@ -97,7 +95,7 @@ const DetallesReserva: React.FC = () => {
                     <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>Pasajeros:</div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Adultos:</span> <span>{pasajeros.adultos < 10 ? `0${pasajeros.adultos}` : pasajeros.adultos}</span></div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Estudiantes:</span> <span>{pasajeros.estudiantes < 10 ? `0${pasajeros.estudiantes}` : pasajeros.estudiantes}</span></div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Adultos May:</span> <span>{pasajeros.mayores < 10 ? `0${pasajeros.mayores}` : pasajeros.mayores}</span></div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Adultos Mayores:</span> <span>{pasajeros.mayores < 10 ? `0${pasajeros.mayores}` : pasajeros.mayores}</span></div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Niños:</span> <span>{pasajeros.niños < 10 ? `0${pasajeros.niños}` : pasajeros.niños}</span></div>
                   </div>
                   

@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { 
-    IonContent, IonPage, IonHeader, IonToolbar, IonButtons, 
-    IonBackButton, IonTitle, IonButton, IonIcon, IonToast, IonLoading 
+    IonContent, IonPage, IonButtons, 
+    IonBackButton, IonButton, IonIcon, IonToast, IonLoading 
 } from '@ionic/react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { personCircleOutline } from 'ionicons/icons';
@@ -82,19 +82,19 @@ const SeleccionAsientos: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader className="ion-no-border">
-                <IonToolbar color="primary">
-                    <IonButtons slot="start"><IonBackButton defaultHref="/buscar-viajes" /></IonButtons>
-                    <IonTitle>Selección de Asientos</IonTitle>
-                    <IonButtons slot="end"><IonIcon icon={personCircleOutline} style={{ fontSize: '30px', marginRight: '15px' }} /></IonButtons>
-                </IonToolbar>
-                <div style={{ background: 'var(--ion-color-primary)', padding: '10px 20px', color: 'white', textAlign: 'center' }}>
-                    <p style={{ margin: 0, fontSize: '14px' }}>
-                        {ruta?.origen} ➔ {ruta?.destino} <br/>
-                        <strong style={{ fontSize: '16px' }}>{horarioSeleccionado}</strong>
-                    </p>
-                </div>
-            </IonHeader>
+            <div className="curved-header-bg">
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center' }}>
+          <IonButtons>
+            <IonBackButton defaultHref="/buscar-viajes" color="light" />
+          </IonButtons>
+          <div className="header-title">
+            <h2>RutaDigital</h2>
+            {/* Solo cambias el subtítulo en cada pantalla */}
+            <div className="header-subtitle">SELECCIÓN DE ASIENTOS</div>
+          </div>
+          <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
+        </div>
+      </div>
 
             <IonContent style={{ '--background': '#f4f5f8' }} className="ion-padding">
 
@@ -102,16 +102,16 @@ const SeleccionAsientos: React.FC = () => {
                 
                 {/* Indicador de progreso de selección */}
                 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                    <h2 style={{ fontSize: '18px', margin: '0 0 5px 0', color: '#333' }}>
+                    <h2 style={{ fontSize: '29px', margin: '0 0 5px 0', color: '#333' }}>
                         Elige tus asientos
                     </h2>
-                    <p style={{ margin: 0, color: '#666' }}>
+                    <p style={{ margin: 0, fontSize: '16px', color: '#666' }}>
                         Seleccionados: <strong>{asientosSeleccionados.length}</strong> de <strong>{totalPasajeros || 1}</strong>
                     </p>
                 </div>
 
                 {/* Leyenda Visual */}
-                <div className="legend-container">
+                <div className="legend-container ">
                     <div className="legend-item"><div className="legend-box disponible" style={{ backgroundColor: '#eef2f5', border: '1px solid #d1d9e0' }}></div> Disponible</div>
                     <div className="legend-item"><div className="legend-box seleccionado" style={{ backgroundColor: '#0f7e80' }}></div> Tu Elección</div>
                     <div className="legend-item"><div className="legend-box ocupado" style={{ backgroundColor: '#ffcccc' }}></div> Ocupado</div>

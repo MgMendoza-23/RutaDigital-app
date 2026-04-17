@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { 
-    IonContent, IonPage, IonHeader, IonToolbar, IonButtons, 
-    IonMenuButton, IonTitle, IonButton, IonIcon, IonItem, 
+    IonContent, IonPage, IonButtons, IonBackButton, 
+    IonButton, IonIcon, IonItem, 
     IonInput, IonLabel, IonList, IonText, IonLoading, IonToast, IonChip 
 } from '@ionic/react';
-import { personOutline, callOutline, mailOutline, saveOutline, shieldCheckmarkOutline } from 'ionicons/icons';
+import { personOutline, callOutline, mailOutline, saveOutline, shieldCheckmarkOutline, personCircleOutline } from 'ionicons/icons';
 import { useAuth } from '../Context/AuthContext';
 import { actualizarPerfilUsuario } from '../services/userService';
 import '../css/variables.css';
@@ -47,16 +47,20 @@ const Perfil: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader className="ion-no-border">
-                <IonToolbar color="primary">
-                    <IonButtons slot="start">
-                        <IonMenuButton />
-                    </IonButtons>
-                    <IonTitle>Mi Perfil</IonTitle>
-                </IonToolbar>
-            </IonHeader>
+             <div className="curved-header-bg">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center' }}>
+                      <IonButtons>
+                        <IonBackButton defaultHref="/buscar-viajes" color="light" />
+                      </IonButtons>
+                      <div className="header-title">
+                        <h2>RutaDigital</h2>
+                        <div className="header-subtitle">MI PERFIL</div>
+                      </div>
+                      <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
+                    </div>
+                  </div>
 
-            <IonContent className="ion-padding" style={{ '--background': '#f4f5f8' }}>
+            <IonContent className="ion-padding" style={{ '--background': '#e9ecf5' }}>
                 
                 {/* Cabecera del Perfil (Avatar y Rol) */}
                 <div style={{ textAlign: 'center', margin: '30px 0' }}>

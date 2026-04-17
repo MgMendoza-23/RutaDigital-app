@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { 
-    IonContent, IonPage, IonHeader, IonToolbar, IonButtons, 
-    IonBackButton, IonTitle, IonButton, IonInput, IonToast, IonLoading 
+    IonContent, IonPage, IonButtons, IonButton,
+    IonIcon, IonInput, IonToast, IonLoading, IonBackButton
 } from '@ionic/react';
 import { useLocation, useHistory } from 'react-router-dom';
+import { personCircleOutline } from 'ionicons/icons';
 import { ReservaPayload } from '../models/types';
 import { useAuth } from '../Context/AuthContext';
 import { crearReserva } from '../services/reservasService';
+import '../css/variables.css';
 
 const DatosContactoReserva: React.FC = () => {
     const location = useLocation<ReservaPayload>();
@@ -72,15 +74,19 @@ const DatosContactoReserva: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader className="ion-no-border">
-                <IonToolbar style={{ '--background': '#0f7e80', color: 'white' }}>
-                    <IonButtons slot="start"><IonBackButton defaultHref="/seleccion-asientos" color="light"/></IonButtons>
-                    <IonTitle>Detalles de Viaje</IonTitle>
-                    <IonButtons slot="end">
-                        <IonButton onClick={realizarPago} style={{ fontWeight: 'bold', color: 'white' }}>Pagar</IonButton>
-                    </IonButtons>
-                </IonToolbar>
-            </IonHeader>
+           <div className="curved-header-bg">
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center' }}>
+          <IonButtons>
+            <IonBackButton defaultHref="/buscar-viajes" color="light" />
+          </IonButtons>
+          <div className="header-title">
+            <h2>RutaDigital</h2>
+            {/* Solo cambias el subtítulo en cada pantalla */}
+            <div className="header-subtitle">CONFIRMACIÓN</div>
+          </div>
+          <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
+        </div>
+      </div>
 
             <IonContent className="ion-padding" style={{ '--background': '#f4f5f8' }}>
                 <div style={{ background: '#eef2f5', borderRadius: '15px', padding: '15px', border: '1px solid #d1d9e0', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
@@ -99,7 +105,7 @@ const DatosContactoReserva: React.FC = () => {
                             <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>Pasajeros:</div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Adultos:</span> <span>{payload.pasajeros.adultos < 10 ? `0${payload.pasajeros.adultos}` : payload.pasajeros.adultos}</span></div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Estudiantes:</span> <span>{payload.pasajeros.estudiantes < 10 ? `0${payload.pasajeros.estudiantes}` : payload.pasajeros.estudiantes}</span></div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Adultos May:</span> <span>{payload.pasajeros.mayores < 10 ? `0${payload.pasajeros.mayores}` : payload.pasajeros.mayores}</span></div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Adultos Mayores:</span> <span>{payload.pasajeros.mayores < 10 ? `0${payload.pasajeros.mayores}` : payload.pasajeros.mayores}</span></div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Niños:</span> <span>{payload.pasajeros.niños < 10 ? `0${payload.pasajeros.niños}` : payload.pasajeros.niños}</span></div>
                         </div>
                         
@@ -135,13 +141,30 @@ const DatosContactoReserva: React.FC = () => {
                         />
                         <IonInput
                             type="email"
-                            label="Correo para recibir el boleto"
-                            labelPlacement="floating"
-                            value={correo}
                             onIonChange={e => setCorreo(e.detail.value!)}
+                            placeholder='Correo Electronico'
+                            style={{ borderBottom: '1px solid #ccc', '--padding-start': '15px' }}
+                            value={correo}
                             />
                     </div>
                 </div>
+
+                <div style={{ marginTop: '30px', marginBottom: '20px', padding: '0 10px' }}>
+            <IonButton 
+                expand="block" 
+                onClick={realizarPago} // Asegúrate de que tu función se siga llamando así
+                style={{ 
+                    '--background': 'var(--ion-color-primary)', 
+                    '--border-radius': '15px', 
+                    height: '55px', 
+                    fontSize: '18px', 
+                    fontWeight: 'bold',
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
+                }}
+            >
+                Confirmar
+            </IonButton>
+        </div>
 
                 <IonLoading isOpen={procesando} message="Procesando pago..." />
                 <IonToast isOpen={!!mensaje} message={mensaje} duration={2000} position="top" onDidDismiss={() => setMensaje('')} />

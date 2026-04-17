@@ -15,7 +15,7 @@ import "@ionic/react/css/padding.css";
 import "@ionic/react/css/flex-utils.css";
 
 /* Tema */
-import "./CSS/variables.css";
+import "./css/variables.css";
 
 setupIonicReact();
 

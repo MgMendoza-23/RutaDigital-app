@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import emailjs from '@emailjs/browser';
 import { 
-    IonContent, IonPage, IonButton, IonToast, IonLoading 
+    IonContent, IonPage, IonButton, IonToast, IonLoading, IonBackButton
+    , IonIcon, IonButtons
 } from '@ionic/react';
+import { personCircleOutline } from 'ionicons/icons';
 import { useLocation, useHistory } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react'; 
 
@@ -81,6 +83,21 @@ const BoletoDigital: React.FC = () => {
 
     return (
         <IonPage>
+
+            <div className="curved-header-bg">
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center' }}>
+          <IonButtons>
+            <IonBackButton defaultHref="/buscar-viajes" color="light" />
+          </IonButtons>
+          <div className="header-title">
+            <h2>RutaDigital</h2>
+            {/* Solo cambias el subtítulo en cada pantalla */}
+            <div className="header-subtitle">BOLETO DIGITAL</div>
+          </div>
+          <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
+        </div>
+      </div>
+
             <IonContent className="ion-padding" style={{ '--background': '#f4f5f8' }}>
                 
                 <div style={{ textAlign: 'center', marginTop: '40px', marginBottom: '20px' }}>
@@ -94,27 +111,27 @@ const BoletoDigital: React.FC = () => {
                         {reserva.rutas.origen} ⟶ {reserva.rutas.destino}
                     </div>
 
-                    <div style={{ color: '#555', fontSize: '12px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '10px' }}>
+                    <div style={{ color: '#555', fontSize: '13px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '10px' }}>
                         Horario | {new Date(reserva.rutas.fecha_salida).toLocaleDateString()} | {reserva.horario}
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <div style={{ flex: 1, borderRight: '1px solid #ccc', paddingRight: '10px' }}>
-                            <div style={{ fontWeight: 'bold', marginBottom: '5px', fontSize: '12px' }}>Pasajeros:</div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Adultos:</span> <span>{reserva.pasajeros?.adultos || 0}</span></div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Estudiantes:</span> <span>{reserva.pasajeros?.estudiantes || 0}</span></div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Adultos May:</span> <span>{reserva.pasajeros?.mayores || 0}</span></div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}><span>Niños:</span> <span>{reserva.pasajeros?.niños || 0}</span></div>
+                            <div style={{ fontWeight: 'bold', marginBottom: '5px', fontSize: '15px' }}>Pasajeros:</div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}><span>Adultos:</span> <span>{reserva.pasajeros?.adultos || 0}</span></div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}><span>Estudiantes:</span> <span>{reserva.pasajeros?.estudiantes || 0}</span></div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}><span>Adultos Mayores:</span> <span>{reserva.pasajeros?.mayores || 0}</span></div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}><span>Niños:</span> <span>{reserva.pasajeros?.niños || 0}</span></div>
                         </div>
                         
                         <div style={{ flex: 1, paddingLeft: '15px', display: 'flex', flexDirection: 'column' }}>
                             <div>
-                                <span style={{ fontWeight: 'bold', fontSize: '12px' }}>Asientos:</span><br/>
-                                <span style={{ fontSize: '12px' }}>{Array.isArray(reserva.asientos)? reserva.asientos.join(', ') : String(reserva.asientos).replace(/[{}[\]"]/g, '')}</span>
+                                <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Asientos:</span><br/>
+                                <span style={{ fontSize: '14px' }}>{Array.isArray(reserva.asientos)? reserva.asientos.join(', ') : String(reserva.asientos).replace(/[{}[\]"]/g, '')}</span>
                             </div>
                             
                             <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
-                                <span style={{ fontWeight: 'bold', fontSize: '14px', marginRight: '10px' }}>Total:</span>
+                                <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '10px' }}>Total:</span>
                                 <div style={{ background: 'white', padding: '5px 15px', borderRadius: '20px', fontSize: '18px', fontWeight: 'bold', color: '#555', border: '1px solid #ccc' }}>
                                     ${reserva.total_pago}
                                 </div>
@@ -128,14 +145,14 @@ const BoletoDigital: React.FC = () => {
                     </div>
 
                     <div style={{ marginTop: '15px' }}>
-                        <span style={{ fontWeight: 'bold', color: '#555' }}>Responsable del viaje:</span>
-                        <p style={{ margin: '5px 0', color: '#666' }}>{reserva.nombre_responsable}</p>
-                        <p style={{ margin: '0 0 15px 0', color: '#666' }}>{reserva.telefono_responsable}</p>
+                        <span style={{ fontWeight: 'bold', color: '#555', fontSize: '15px' }}>Responsable del viaje:</span>
+                        <p style={{ margin: '8px 0', color: '#666', fontSize: '15px' }}>{reserva.nombre_responsable}</p>
+                        <p style={{ margin: '0 0 15px 0', color: '#666', fontSize: '15px' }}>{reserva.telefono_responsable}</p>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                       {/*<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <span style={{ fontWeight: 'bold', color: '#555' }}>Método de Pago:</span>
                             <span style={{ color: '#666' }}>Tarjeta de Débito</span>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div style={{ display: 'flex', gap: '10px', marginTop: '25px' }}>

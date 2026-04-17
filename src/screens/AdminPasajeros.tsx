@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  IonContent, IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, 
+  IonContent, IonPage, IonButtons, 
   IonMenuButton, IonSelect, IonSelectOption, IonItem, 
   IonList, IonCard, IonCardContent, IonIcon, IonSpinner, IonText
 } from '@ionic/react';
-import { personOutline, callOutline, bus, ticketOutline, checkmarkCircle } from 'ionicons/icons';
+import { personOutline, callOutline, bus, ticketOutline, checkmarkCircle, personCircleOutline } from 'ionicons/icons';
 
 import { obtenerRutas, obtenerPasajeros } from '../services/adminService';
 import { Ruta, Reserva } from '../models/types';
@@ -57,14 +57,18 @@ const AdminPasajeros: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar color="primary">
-                    <IonButtons slot="start">
-                        <IonMenuButton />
-                    </IonButtons>
-                    <IonTitle>Lista de Pasajeros</IonTitle>
-                </IonToolbar>
-            </IonHeader>
+            <div className="curved-header-bg">
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '15px 20px', alignItems: 'center' }}>
+          <IonButtons>
+            <IonMenuButton color="light" />
+          </IonButtons>
+          <div className="header-title">
+            <h2>RutaDigital</h2>
+            <div className="header-subtitle">LISTA DE PASJEROS</div>
+          </div>
+          <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
+        </div>
+      </div>
 
             <IonContent className="ion-padding" style={{ '--background': '#f4f5f8' }}>
                 

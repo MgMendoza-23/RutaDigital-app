@@ -3,7 +3,7 @@ import { supabase } from "../API/supabase";
 /* Funciones del archivo Functions.Rutas.ts 
 
     Busacra rutas con filtros
-    Obtener ddetalle de una ruta
+    Obtener detalle de una ruta
 */
 
 // Buscar rutas
