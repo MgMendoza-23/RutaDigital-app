@@ -81,7 +81,6 @@ const DatosContactoReserva: React.FC = () => {
           </IonButtons>
           <div className="header-title">
             <h2>RutaDigital</h2>
-            {/* Solo cambias el subtítulo en cada pantalla */}
             <div className="header-subtitle">CONFIRMACIÓN</div>
           </div>
           <IonIcon icon={personCircleOutline} style={{ fontSize: '35px', color: 'white' }} />
@@ -120,6 +119,9 @@ const DatosContactoReserva: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                        <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #ccc', fontWeight: 'bold', color: '#555' }}>
+                         Unidad: {payload.ruta.unidad || 'Por asignar'}
+                        </div>
                 </div>
 
                 <div style={{ marginTop: '20px', textAlign: 'center' }}>

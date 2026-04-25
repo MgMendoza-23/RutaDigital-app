@@ -145,6 +145,7 @@ const AdminEscaner: React.FC = () => {
                                         <p><strong>Pasajero:</strong> {resultado.nombre_responsable}</p>
                                         <p><strong>Asientos:</strong> {String(resultado.asientos).replace(/[{}[\]"]/g, '')}</p>
                                         <p><strong>Horario:</strong> {resultado.horario}</p>
+                                        <p><strong>Unidad:</strong> {resultado.rutas?.unidad || 'N/A'}</p>
                                         <p><strong>Total pagado:</strong> ${resultado.total_pago}</p>
                                     </div>
 

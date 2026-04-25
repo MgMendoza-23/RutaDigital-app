@@ -107,6 +107,9 @@ const AdminPasajeros: React.FC = () => {
                                 {totalAsientosOcupados} Asientos Ocupados
                             </IonText>
                         </div>
+                            <div style={{ textAlign: 'center', margin: '10px 0', fontWeight: 'bold', color: 'var(--ion-color-primary)' }}>
+                                Unidad Asignada: {rutas.find(r => r.id === rutaSeleccionada)?.unidad || 'No definida'}
+                            </div>
 
                         {cargandoPasajeros ? (
                             <div style={{ textAlign: 'center', marginTop: '30px' }}>

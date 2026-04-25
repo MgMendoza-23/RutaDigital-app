@@ -113,6 +113,7 @@ const BoletoDigital: React.FC = () => {
 
                     <div style={{ color: '#555', fontSize: '13px', fontWeight: 'bold', borderBottom: '1px solid #ccc', paddingBottom: '10px', marginBottom: '10px' }}>
                         Horario | {new Date(reserva.rutas.fecha_salida).toLocaleDateString()} | {reserva.horario}
+                        <br/> Unidad Asignada: {reserva.rutas.unidad || "N/A"}
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>

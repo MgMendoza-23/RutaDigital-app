@@ -34,7 +34,7 @@ export const eliminarRuta = async (id: string | number) => {
 };
 
 // Actualizar ruta
-export const actualizarRuta = async (idRuta: string | number, nuevosDatos: Ruta) => {
+export const actualizarRuta = async (idRuta: string | number, nuevosDatos: Partial<Ruta>) => {
     return await supabase
     .from('rutas')
     .update(nuevosDatos)
@@ -58,7 +58,7 @@ export const obtenerPasajeros = async (rutaId: number) => {
 export const buscarBoletoQR = async (reservaId: string) => {
     const { data, error } = await supabase
         .from('reservas')
-        .select('*')
+        .select(`*, rutas (unidad)`)
         .eq('id', reservaId)
         .single();
 

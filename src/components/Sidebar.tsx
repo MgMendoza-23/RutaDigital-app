@@ -31,7 +31,7 @@ const Sidebar: React.FC = () => {
         </div>
 
         <IonList lines="none" className="menu-list">
-          <IonMenuToggle autoHide={false}>
+          <IonMenuToggle autoHide={false}> 
 
             <IonItem routerLink="/buscar-viajes" className="menu-item" detail={false}>
               <IonLabel>Inicio</IonLabel>

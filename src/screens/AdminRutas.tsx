@@ -4,7 +4,7 @@ import {
   IonToast, IonDatetime, IonModal, IonButtons, IonMenuButton, 
   IonSelect, IonSelectOption, IonChip
 } from '@ionic/react';
-import { trash, createOutline, calendarOutline, timeOutline, addOutline, closeCircleOutline, personCircleOutline } from 'ionicons/icons';
+import { trash, createOutline, calendarOutline, timeOutline, addOutline, closeCircleOutline, personCircleOutline, busOutline } from 'ionicons/icons';
 import '../css/variables.css';
 
 const CIUDADES_DISPONIBLES = [
@@ -31,6 +31,7 @@ const AdminRutas: React.FC = () => {
   const [mostrarToast, setMostrarToast] = useState(false);
   const [nuevaHora, setNuevaHora] = useState('');
   const [modoEdicion, setModoEdicion] = useState<number | null>(null);
+  const [unidad, setUnidad] = useState('');
   
   const [form, setForm] = useState({
     origen: '',
@@ -75,7 +76,8 @@ const AdminRutas: React.FC = () => {
       precio: parseFloat(form.precio),
       duracion: form.duracion ? form.duracion : undefined,
       horarios: form.horarios,
-      fecha_salida: form.fecha_salida 
+      fecha_salida: form.fecha_salida,
+      unidad: unidad
     };
 
     let resultado;
@@ -116,6 +118,7 @@ const AdminRutas: React.FC = () => {
 
   const cargarParaEditar = (ruta: Ruta) => {
     setModoEdicion(ruta.id!); 
+    setUnidad(ruta.unidad || '');
     setForm({
         origen: ruta.origen,
         destino: ruta.destino,
@@ -129,6 +132,7 @@ const AdminRutas: React.FC = () => {
 
   const limpiarFormulario = () => {
     setModoEdicion(null); 
+    setUnidad('');
     setForm({ origen: '', destino: '', precio: '', duracion: '', horarios: [], fecha_salida: new Date().toISOString() });
   };
 
@@ -223,7 +227,16 @@ const AdminRutas: React.FC = () => {
                       placeholder="Ej. 2h 30m, 4 horas..."
                   />
                 </IonItem>
-            </div>
+              </div>
+
+              <div className="input-card" style={{ display: 'flex', alignItems: 'center', padding: '5px 15px' }}>
+                <IonIcon icon={busOutline} className="input-icon" color="medium" />
+                <IonInput
+                  placeholder="Número de Unidad"
+                  value={unidad}
+                  onIonChange={e => setUnidad(e.detail.value!)}
+                  />
+              </div>
 
             <div style={{ background: '#f9f9f9', padding: '15px', borderRadius: '10px', marginTop: '15px', border: '1px solid #eee' }}>
                 <IonLabel style={{ fontWeight: 'bold', color: '#555', display: 'block', marginBottom: '10px' }}>

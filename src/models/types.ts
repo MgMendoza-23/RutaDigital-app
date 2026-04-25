@@ -14,6 +14,7 @@ export interface Ruta {
     duracion?: string;
     horarios?: string[];
     fecha_salida: string;
+    unidad?: string;
 }
 export type EstadoReserva = 'confirmado' | 'cancelado';
 
