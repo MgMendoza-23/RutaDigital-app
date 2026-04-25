@@ -1,27 +1,49 @@
-/* Contenedor principal centrado */
+/* Contenedor del fondo */
+.login-page-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    width: 100%;
+    background: linear-gradient(135deg, #1ba098 0%, #0f7e80 100%);
+}
+
+/* Contenedor principal centrado (card flotante) */
 .login-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
-    background-color: #e7e7ea; 
-    max-width: 600px; /* límite de ancho */ 
-    margin: 0 auto
+
+    /* Efecto flotante cristalino */
+    background: rgba(255, 255, 255, 0.90);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border-radius: 30px;
+    padding: 40px 30px;
+    width: 90%;
+    max-width: 400px; /* límite de ancho */ 
+    margin: 20px;
+
+    /* Sombra profunda para el efecto de elevación */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Sección del Logo */
 .header-logo {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .logo-icon {
-    font-size: 80px;
-    color: var(--ion-color-black);
+    font-size: 60px;
+    color: var(--ion-color-primary);
 }
 
 .app-title {
-    font-size: 28px;
+    font-size: 26px;
+    font-family: serif;
     font-weight: 700;
     color: #333;
     margin-top: 10px;
@@ -36,12 +58,12 @@
 
 
 .custom-input {
-    --background: #ffffff;
+    --background: #f9f9f9;
     --padding-start: 15px;
-    border-radius: 1-+2px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(224, 22, 22, 0.05); /* Sombra suave */
-    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: none; /* Sombra suave */
+    border: 1px solid #eee;
 }
 
 /* Botón principal */

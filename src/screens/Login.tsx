@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {IonContent, IonPage, IonInput, IonButton, IonIcon, IonItem, IonLabel, IonLoading, IonToast} from '@ionic/react';
+import {IonContent, IonPage, IonInput, IonButton, IonIcon, IonItem, IonLoading, IonToast} from '@ionic/react';
 import { mailOutline, lockClosedOutline, logInOutline, personAddOutline, bus, personOutline, callOutline, warningOutline, checkmarkCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 //importamos archivo css
@@ -53,10 +53,10 @@ const Login: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen>
-        
+      <IonContent fullscreen style={{ '--background': 'transparent' }}>
+        <div className="login-page-background">              
       
-        <div className="login-container ion-padding">
+        <div className="login-container">
             
             
             <div className="header-logo">
@@ -67,8 +67,6 @@ const Login: React.FC = () => {
 
             
             <div>
-
-               
                 <IonItem lines="none" className="custom-input">
                     <IonIcon icon={mailOutline} slot="start" color="medium" />
                     <IonInput 
@@ -135,7 +133,7 @@ const Login: React.FC = () => {
                     {esRegistro ? "Ingresa aquí" : "Crea una cuenta"}
                 </span>
             </div>
-
+          </div>
         </div>
 
         
