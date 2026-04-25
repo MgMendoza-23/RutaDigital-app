@@ -9,7 +9,7 @@ import { obtenerMisReservas, cancelarReserva }  from '../services/reservasServic
 import { AuthContext } from '../Context/AuthContext';
 import { Reserva } from '../models/types';
 
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 const Reservaciones: React.FC = () => {
@@ -33,7 +33,7 @@ const Reservaciones: React.FC = () => {
     cargarMisViajes();
   });
 
-  // 👇 Esta es la función clave que faltaba para procesar las cancelaciones
+  //  Esta es la función clave para procesar las cancelaciones
   const manejarCancelacion = async (reservaId: number) => {
     if (!user) return;
     
@@ -51,7 +51,11 @@ const Reservaciones: React.FC = () => {
   const formatearFecha = (iso?: string) => {
     if (!iso) return '—';
     try {
-      const d = parseISO(iso);
+      const soloFecha = iso.split('T')[0];
+      const [año, mes, dia] = soloFecha.split('-');
+
+      const d = new Date(Number(año), Number(mes) -1, Number(dia), 12, 0, 0);
+
       if (isNaN(d.getTime())) return 'Fecha inválida';
       return format(d, "dd 'de' MMM yyyy, HH:mm", { locale: es });
     } catch { return 'Fecha inválida'; }

@@ -96,7 +96,14 @@ const DatosContactoReserva: React.FC = () => {
                     </div>
 
                     <div style={{ color: '#555', fontSize: '13px', fontWeight: 'bold', marginBottom: '10px' }}>
-                        Horario | {new Date(payload.ruta.fecha_salida).toLocaleDateString()} | {payload.horarioSeleccionado}
+                        Horario | {payload.ruta.fecha_salida?
+                        (() => {
+                            const soloFecha = payload.ruta.fecha_salida.split('T')[0];
+                            const [año, mes, dia] = soloFecha.split('-');
+
+                            return `${dia}/${mes}/${año}`;
+                        }) ()
+                        : 'Sin fecha'}| {payload.horarioSeleccionado}
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #ccc', paddingTop: '10px' }}>

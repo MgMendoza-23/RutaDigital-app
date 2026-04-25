@@ -87,7 +87,12 @@ const DetallesReserva: React.FC = () => {
               {/* Detalles (Horario, Pasajeros, Asientos) */}
               <div style={{ color: '#555', fontSize: '14px', lineHeight: '1.6' }}>
                 <p style={{ margin: '0 0 10px 0', fontWeight: 'bold' }}>
-                    Horario | {ruta.fecha_salida ? new Date(ruta.fecha_salida).toLocaleDateString() : 'Sin fecha'} | Hora: <span style={{color: horarioSeleccionado ? '#0f7e80' : '#ff4d4d'}}>{horarioSeleccionado || 'Seleccione abajo'}</span>|
+                    Horario | {ruta.fecha_salida ?
+                    (() => {
+                        const [año, mes, dia] = ruta.fecha_salida.split('T')[0].split('-');
+                        return `${dia}/${mes}/${año}`;
+                    }) ()
+                    : 'Sin fecha'} | Hora: <span style={{color: horarioSeleccionado ? '#0f7e80' : '#ff4d4d'}}>{horarioSeleccionado || 'Seleccione abajo'}</span>|
                 </p>
                 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
