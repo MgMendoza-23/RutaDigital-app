@@ -61,6 +61,21 @@ const Reservaciones: React.FC = () => {
     } catch { return 'Fecha inválida'; }
   };
 
+  const verificarEstodoReserva = (fechaIso?: string) => {
+    if (!fechaIso) return false;
+    try {
+      const soloFecha = fechaIso.split('T')[0];
+      const [año, mes, dia] = soloFecha.split('-');
+      const fechaViaje = new Date(Number(año), Number(mes) -1, Number(dia));
+
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+      return fechaViaje < hoy;
+    } catch {
+      return false;
+    }
+  }
+
   return (
     <IonPage>
       <div className="curved-header-bg">
@@ -93,7 +108,25 @@ const Reservaciones: React.FC = () => {
           </div>
         )}
 
-        {reservas.map((res) => (
+        {reservas.map((res) => {
+          const estaCancelada = res.estado === 'cancelado';
+          const estaPasada = verificarEstodoReserva(res.rutas?.fecha_salida);
+
+          let textoEstado = 'Confirmada';
+          let bgEstado = '#e6f7f5';
+          let colorEstado = '#1ba098';
+
+          if (estaCancelada){
+            textoEstado = 'Cancelada';
+            bgEstado = '#ffe6e6';
+            colorEstado = '#c0392b';
+          } else if (estaPasada) {
+            textoEstado = 'Finalizada';
+            bgEstado = '#e8e8e8';
+            colorEstado = '#666666';
+        }
+          return (
+          
           <IonCard key={res.id} style={{ borderRadius: '15px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', marginBottom: '20px', background: 'white' }}>
             <IonCardContent>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 'bold', color: '#333' }}>
@@ -116,26 +149,25 @@ const Reservaciones: React.FC = () => {
               </div>
 
               <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {res.estado === 'cancelado' ? (
+        
                   <div style={{
                     display: 'flex', alignItems: 'center', padding: '4px 10px',
-                    borderRadius: 12, background: '#ffe6e6', color: '#c0392b',
+                    borderRadius: 12, background: bgEstado, color: colorEstado,
                     fontSize: 12, fontWeight: 'bold', width: 'fit-content'
                   }}>
-                    Cancelada
+                    {textoEstado}
                   </div>
-                ) : (
-                  <div style={{
-                    display: 'flex', alignItems: 'center', padding: '4px 10px',
-                    borderRadius: 12, background: '#e6f7f5', color: '#1ba098',
-                    fontSize: 12, fontWeight: 'bold', width: 'fit-content'
-                  }}>
-                    Confirmada
-                  </div>
-                )}
 
                 <div style={{ display: 'flex', width: '100%' }}>
-                  {res.estado !== 'cancelado' ? (
+                  {estaCancelada ? (
+                    <IonButton expand="block" disabled color="medium" fill="outline" style={{ '--border-radius': '8px', width: '100%', margin: 0 }}>
+                      Reservación cancelada
+                    </IonButton>
+                  ) : estaPasada ? (
+                    <IonButton expand="block" disabled color="medium" fill="outline" style={{ '--border-radius': '8px', width: '100%', margin: 0 }}>
+                      Viaje Concluido
+                    </IonButton>
+                  ) : (
                     <IonButton
                       expand="block"
                       color="medium"
@@ -145,16 +177,13 @@ const Reservaciones: React.FC = () => {
                     >
                       Cancelar
                     </IonButton>
-                  ) : (
-                    <IonButton expand="block" disabled color="medium" fill="outline" style={{ '--border-radius': '8px', width: '100%', margin: 0 }}>
-                      Reservación cancelada
-                    </IonButton>
                   )}
                 </div>
               </div>
             </IonCardContent>
           </IonCard>
-        ))}
+          );
+        })};
 
         <IonToast
           isOpen={mostrarToast}
