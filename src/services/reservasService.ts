@@ -104,3 +104,16 @@ export const obtenerAsientosOcupados = async (rutaId: number, horario: string) =
         return { data: [], error: err };
     }
 };
+
+export const obtenerHistorialViajes = async (usuarioId: string) => {
+    const hoy = new Date().toISOString().split('T')[0];
+
+    const { data, error} = await supabase
+        .from('reservas')
+        .select(` *, rutas (*)`)
+        .eq('ususario_id', usuarioId)
+        .or(`estado.eq.cancelado, rutas.fecha_salida.lt.${hoy}`)
+        .order('created_at', { ascending: false });
+
+    return { data, error };
+};

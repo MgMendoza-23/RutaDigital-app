@@ -63,7 +63,7 @@ const Sidebar: React.FC = () => {
               <IonLabel>Reservaciones</IonLabel>
               </IonItem>
 
-              <IonItem routerLink="/historial" className="menu-item">
+              <IonItem routerLink="/historial-viajes" className="menu-item">
               <IonLabel>Historial de Viajes</IonLabel>
             </IonItem>
               </>

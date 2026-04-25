@@ -12,7 +12,7 @@ import { locationOutline, calendarOutline, personCircleOutline, arrowForward, ti
 import '../css/variables.css';
 import { useBuscarViajes } from '../hooks/useBuscarViajes';
 
-const CIUDADES_DISPONIBLES = [
+const CIUDADES_DISPONIBLES = [ 
   "Palenque, Chiapas",
   "Tenosique, Tabasco",
   "Balancan, Tabasco",

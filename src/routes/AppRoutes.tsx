@@ -15,6 +15,7 @@ import BoletoDigital from "../screens/BoletoDigital";
 import AdminPasajeros from "../screens/AdminPasajeros";
 import Perfil from "../screens/Perfil";
 import AdminEscaner from "../screens/AdminScanner";
+import HistorialViajes from "../screens/HistorialViajes";
 import { useAuth } from "../Context/AuthContext";
 
 
@@ -50,6 +51,7 @@ const AppRoutes: React.FC = () => {
           <ProtectedRoute exact path="/boleto-digital" component={BoletoDigital} requiredRole="usuario"/>
           <ProtectedRoute exact path="/admin-pasajeros" component={AdminPasajeros} requiredRole="admin"/>
           <ProtectedRoute exact path="/admin-escaner" component={AdminEscaner} requiredRole="admin"/>
+          <ProtectedRoute exact path="/historial-viajes" component={HistorialViajes} requiredRole="usuario"/>
           <ProtectedRoute exact path="/perfil" component={Perfil} />
 
           <Route exact path="/">
