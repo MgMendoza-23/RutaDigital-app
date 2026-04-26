@@ -58,6 +58,8 @@ const BoletoDigital: React.FC = () => {
                 }
             } else if (tipo === 'correo') {
                 // LÓGICA DE ENVÍO POR CORREO
+                const qrData = `ID:${reserva.id}|Ruta:${reserva.ruta_id}`;
+                const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
                 const templateParams = {
                     to_email: correoResponsable || 'correo_no_proporcionado@test.com',
                     to_name: reserva.nombre_responsable,
@@ -73,7 +75,8 @@ const BoletoDigital: React.FC = () => {
                     })(),
                     horario: reserva.horario,
                     total: reserva.total_pago,
-                    id_reserva: reserva.id
+                    id_reserva: reserva.id,
+                    qr_url: qrImageUrl
                 };
 
                 // OJO: Deberás cambiar estos textos por tus credenciales de EmailJS
