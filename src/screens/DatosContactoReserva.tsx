@@ -146,7 +146,7 @@ const DatosContactoReserva: React.FC = () => {
                             value={telefono} 
                             onIonChange={e => setTelefono(e.detail.value!)} 
                             placeholder="Número de Teléfono"
-                            style={{ '--padding-start': '15px' }}
+                            style={{ borderBottom: '1px solid #ccc', '--padding-start': '15px' }}
                         />
                         <IonInput
                             type="email"
@@ -158,22 +158,13 @@ const DatosContactoReserva: React.FC = () => {
                     </div>
                 </div>
 
-                <div style={{ marginTop: '30px', marginBottom: '20px', padding: '0 10px' }}>
             <IonButton 
                 expand="block" 
-                onClick={realizarPago} // Asegúrate de que tu función se siga llamando así
-                style={{ 
-                    '--background': 'var(--ion-color-primary)', 
-                    '--border-radius': '15px', 
-                    height: '55px', 
-                    fontSize: '18px', 
-                    fontWeight: 'bold',
-                    boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
-                }}
-            >
+
+                onClick={realizarPago} 
+                style={{ '--border-radius': '10px', '--background': '#0f7e80', height: '50px' }}>
                 Confirmar
             </IonButton>
-        </div>
 
                 <IonLoading isOpen={procesando} message="Procesando pago..." />
                 <IonToast isOpen={!!mensaje} message={mensaje} duration={2000} position="top" onDidDismiss={() => setMensaje('')} />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import emailjs from '@emailjs/browser';
 import { 
@@ -29,7 +30,7 @@ const BoletoDigital: React.FC = () => {
             activo: true, 
             mensaje: tipo === 'correo' 
                 ? 'Enviando, revisa tu correo al finalizar la operación.' 
-                : 'Descargando boleto...' 
+                : 'Generando PDF del boleto...' 
         });
 
        try {
@@ -41,11 +42,19 @@ const BoletoDigital: React.FC = () => {
                         useCORS: true,
                         backgroundColor: '#ffffff'
                     });
-                    const image = canvas.toDataURL("image/png");
-                    const link = document.createElement('a');
-                    link.download = `Boleto_RutaDigital_${reserva.id}.png`;
-                    link.href = image;
-                    link.click();
+
+                    const imgData = canvas.toDataURL("image/png");
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    
+                    // Calculamos el ancho y alto de la imagen en mm
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                    // Añadimos la imagen al PDF
+                    pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
+                    pdf.save(`Boleto_RutaDigital_${reserva.id}.pdf`);
+                   
                 }
             } else if (tipo === 'correo') {
                 // LÓGICA DE ENVÍO POR CORREO
@@ -54,8 +63,14 @@ const BoletoDigital: React.FC = () => {
                     to_name: reserva.nombre_responsable,
                     origen: reserva.rutas.origen,
                     destino: reserva.rutas.destino,
-                    asientos: Array.isArray(reserva.asientos) ? reserva.asientos.join(', ') : String(reserva.asientos).replace(/[{}[\]"]/g, ''),
-                    fecha: new Date(reserva.rutas.fecha_salida).toLocaleDateString(),
+                    asientos: Array.isArray(reserva.asientos) 
+                        ? reserva.asientos.join(', ') 
+                        : String(reserva.asientos).replace(/[{}[\]"]/g, ''),
+                    fecha: (() => {
+                        const soloFecha = reserva.rutas.fecha_salida.split('T')[0];
+                        const [año, mes, dia] = soloFecha.split('-');
+                        return `${dia}/${mes}/${año}`;
+                    })(),
                     horario: reserva.horario,
                     total: reserva.total_pago,
                     id_reserva: reserva.id
@@ -63,11 +78,13 @@ const BoletoDigital: React.FC = () => {
 
                 // OJO: Deberás cambiar estos textos por tus credenciales de EmailJS
                 await emailjs.send(
-                    'TU_SERVICE_ID', 
-                    'TU_TEMPLATE_ID', 
+                    'service_v1igfzd', 
+                    'template_zq5mwmq', 
                     templateParams, 
-                    'TU_PUBLIC_KEY'
+                    '7ZlH2IzepOvHlXQEm'
                 );
+
+                alert("Se ha enviado tu boleto a tu correo electrónico.");
             }
         } catch (error) {
             console.error("Error procesando el boleto:", error);

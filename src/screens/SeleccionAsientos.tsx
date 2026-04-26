@@ -163,7 +163,7 @@ const SeleccionAsientos: React.FC = () => {
                     message={mensajeToast}
                     duration={2000}
                     color="warning"
-                    onDidDismiss={() => setMensajeToast('')}
+                    onDidDismiss={() => setMensajeToast('')} 
                 />
             </IonContent>
 
