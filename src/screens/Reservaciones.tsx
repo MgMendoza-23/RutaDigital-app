@@ -8,6 +8,7 @@ import { personCircleOutline, timeOutline, pinOutline, bus } from 'ionicons/icon
 import { obtenerMisReservas, cancelarReserva }  from '../services/reservasService';
 import { AuthContext } from '../Context/AuthContext';
 import { Reserva } from '../models/types';
+import { verificarEstadoReserva } from '../utils/fechas';
 
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -61,7 +62,7 @@ const Reservaciones: React.FC = () => {
     } catch { return 'Fecha inválida'; }
   };
 
-  const verificarEstodoReserva = (fechaIso?: string) => {
+  /*const verificarEstodoReserva = (fechaIso?: string) => {
     if (!fechaIso) return false;
     try {
       const soloFecha = fechaIso.split('T')[0];
@@ -74,7 +75,7 @@ const Reservaciones: React.FC = () => {
     } catch {
       return false;
     }
-  }
+  } */
 
   return (
     <IonPage>
@@ -110,7 +111,7 @@ const Reservaciones: React.FC = () => {
 
         {reservas.map((res) => {
           const estaCancelada = res.estado === 'cancelado';
-          const estaPasada = verificarEstodoReserva(res.rutas?.fecha_salida);
+          const estaPasada = verificarEstadoReserva(res.rutas?.fecha_salida);
 
           let textoEstado = 'Confirmada';
           let bgEstado = '#e6f7f5';
