@@ -81,7 +81,7 @@ const BuscarViajes: React.FC = () => {
             </IonSegmentButton>
             <IonSegmentButton value="vuelta" style={{ '--border-radius': '20px', '--background-checked': 'white', '--color-checked': 'black' }}>
               <IonLabel style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>Ida y Vuelta</IonLabel>
-            </IonSegmentButton>
+            </IonSegmentButton> 
           </IonSegment>
         </div>
 
