@@ -20,7 +20,13 @@ const AdminEscaner: React.FC = () => {
 
         const scanner = new Html5QrcodeScanner(
             "lector-qr", 
-            { fps: 10, qrbox: { width: 250, height: 250 } }, 
+            { 
+                fps: 10, 
+                qrbox: { width: 250, height: 250 },
+                videoConstraints: {
+                    facingMode: "environment"   
+                } 
+            }, 
             false
         );
 
